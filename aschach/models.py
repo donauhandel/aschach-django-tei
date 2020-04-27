@@ -26,6 +26,10 @@ models.Field.set_extra = set_extra
 
 class Uri(models.Model):
     """ Beschreibt einen Normdateneintrag """
+    legacy_id = models.CharField(
+        max_length=300, blank=True,
+        verbose_name="Legacy ID"
+        )
     uri = models.CharField(
         max_length=300, blank=True,
         verbose_name="Normdata URL"
@@ -42,7 +46,10 @@ class Uri(models.Model):
         verbose_name = 'Normdaten URL'
 
     def __str__(self):
-        return f"{self.uri}"
+        if self.uri is not None:
+            return f"{self.uri}"
+        else:
+            return f"{self.id}"
 
 
 class Angabe(models.Model):
