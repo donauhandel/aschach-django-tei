@@ -37,7 +37,7 @@
       <row>
         <cell>Richtung:</cell>
         <cell>
-          <rs type="{{ x.pseudo_scheme }}" ref="#{{ x.fahrtrichtung.xml_id }}">
+          <rs type="fahrtrichtung" ref="#{{ x.fahrtrichtung.xml_id }}">
             {{ x.fahrtrichtung }}
           </rs>
         </cell>
