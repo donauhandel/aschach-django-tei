@@ -163,3 +163,21 @@ VOCABS_SETTINGS = {
 }
 
 APPCREATOR_SPREADSHEET_ID = "1A08Iv--5cqbKM71U0ww32gDx5ZnXwEr3R1RAg3PjgYE"
+
+LEAFLET_CONFIG = {
+    'MAX_ZOOM': 18,
+    'DEFAULT_CENTER': (48, 15),
+    'DEFAULT_ZOOM': 8,
+    'TILES': [
+        (
+            'BASIC',
+            'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            {
+                'attribution':
+                    '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>\
+                    contributors',
+                'maxZoom': 18,
+            }
+        )
+    ],
+}
