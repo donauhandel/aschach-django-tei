@@ -1,0 +1,22 @@
+<xenoData xmlns="http://www.tei-c.org/ns/1.0" xml:id="ware__{{ object.id}}">
+  <rdf:Description
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:dc="http://purl.org/dc/terms/"
+    xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+    rdf:about="https://vocabs.acdh.oeaw.ac.at/donauhandel/aschach/waren/ware__{{ object.id }}">
+    <dc:source>Donauhandel Aschach</dc:source>
+    <skos:topConceptOf rdf:resource="https://vocabs.acdh.oeaw.ac.at/donauhandel/aschach/waren/Schema"/>
+    <skos:prefLabel xml:lang="de">{{ object.name }}</skos:prefLabel>
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+    {% if object.beschreibung %}
+      <skos:definition xml:lang="de">
+        {{ object.beschreibung }}
+      </skos:definition>
+    {% endif %}
+    {% if object.name_orig %}
+      <skos:altLabel xml:lang="de">{{ object.name_orig }}</skos:altLabel>
+    {% endif %}
+    <skos:inScheme rdf:resource="https://vocabs.acdh.oeaw.ac.at/donauhandel/aschach/waren/Schema"/>
+  </rdf:Description>
+</xenoData>

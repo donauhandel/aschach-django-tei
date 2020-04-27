@@ -1,0 +1,262 @@
+{% extends "webpage/base.html" %}
+{% load static %}
+{% load webpage_extras %}
+{% block title %}{{ object }}{% endblock %}
+{% block scriptHeader %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/spin.js/2.3.2/spin.min.js"></script>
+<script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/three@latest/build/three.min.js"></script>
+<script crossorigin src="https://unpkg.com/@acdh/network-visualization@latest/lib/network-visualization.umd.js"></script>
+<script src="{% static 'netvis/js/netvis.js' %}"></script>
+{% endblock %}
+{% block content %}
+<!-- <div class="container"> -->
+<div class="card w-100">
+  <div class="card-header">
+    <div class="row">
+      <div class="col-md-2">
+        {% if object.get_prev %}
+        <h2>
+          <a href="{{ object.get_prev }}" title="previous">
+            <i data-feather="chevron-left"></i>
+          </a>
+        </h2>
+        {% endif %}
+      </div>
+      <div class="col-md-8">
+        <h2 style="text-align: center;">
+          <small><a href="{{ object.get_listview_url }}" title="back to listview"><small>{{ class_name }}</small></a></small>
+          {{ object }}
+          {% if user.is_authenticated %}
+            <a href="{{ object.get_edit_url }}" title="edit">
+              <i data-feather="edit"></i>
+            </a>
+            <a href="{{ object.get_delete_url }}" title="delete">
+              <i data-feather="delete"></i>
+            </a>
+          {% endif %}
+          <a href="{% url 'aschach:angabe_arche' pk=object.id %}" title="download ARCHE-RDF">
+            <i data-feather="download"></i>
+          </a>
+          {% if object.get_tei_url %}
+          <small>
+              <a href="{{ object.get_tei_url }}" title="download as XML/TEI">
+                  <i data-feather="download"></i>
+              </a>
+          </small>
+          {% endif %}
+        </h2>
+      </div>
+      <div class="col-md-2">
+        <h2>
+          {% if object.get_next %}
+          <a href="{{ object.get_next }}" style="float:right" title="next">
+            <i data-feather="chevron-right"></i>
+          </a>
+        </h2>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="card-body">
+    {% block custom %}
+    <div class="row">
+        <div class="col-md-4">
+          <legend>Angaben</legend>
+            <table class="table table-responsive table-hover">
+              <tr>
+                <th>Id des Datensatzes:</th>
+                <td>{{ object.legacy_pk}}</td>
+              </tr>
+              <tr>
+                <th>Datum:</th>
+                <td><abbr title="{{ object.datum }}">{{ object.datum_original }}</td>
+              </tr>
+              <tr>
+                <th>Quelle:</th>
+                <td>{{ object.quelle }}</td>
+              </tr>
+              <tr>
+                <th>pag:</th>
+                <td>{{ object.bildnummern }}</td>
+              </tr>
+              <tr>
+                <th>Scan(s):</th>
+                <td>
+                  {% for x in object.scan.all %}
+                  {{ x.phaidra_id }}
+                  <a href="https://fedora.phaidra.univie.ac.at/fedora/objects/{{ x.phaidra_id }}/methods/bdef:Content/get">
+                    <i data-feather="image"></i>
+                  </a> | <a href="https://fedora.phaidra.univie.ac.at/fedora/objects/{{ x.phaidra_id }}/methods/bdef:Asset/getObjectInfo">
+                    <i data-feather="info"></i>
+                  </a>
+<br />
+                  {% endfor %}
+                </td>
+              </tr>
+            </table>
+        </div>
+        <div class="col-md-4">
+          <legend>Fahrzeuge</legend>
+          {% for x in object.fahrzeug.all %}
+            <table class="table table-responsive table-hover">
+              <tr>
+                <th>FahrzeugId:</th>
+                <td><a href="{{ x.get_absolute_url }}">{{ x.legacy_pk}}</a></td>
+              </tr>
+              <tr>
+                <th>Fahrzeug(e)</th>
+                <td>
+                  {% for y in x.get_schifftyp %}
+                    <small>Typ: </small><a href="{{ y.skosconcept.get_absolute_url }}">{{ y.skosconcept }}</a> <br />
+                    <small>Anzahl: </small> {{ y.anzahl }} <br />
+                    {% if y.leer %}
+                      <small>leer: </small> {{ y.leer }}
+                    {% endif %}
+                  {% endfor %}
+                </td>
+              </tr>
+              <tr>
+                <th>Fahrzeugführer:</th>
+                <td>
+                  <small>Name:</small> <a href="{{ x.person.get_absolute_url }}">{{ x.person }}</a><br />
+                  {% if x.person.bezeichnung %}
+                    <small>Bezeichnung:</small> {{x.person.bezeichnung }}<br />
+                  {% endif %}
+                </td>
+              </tr>
+              <tr>
+                <th>Herkunft:</th>
+                <td>
+                  <small>Ort:</small> <a href="{{ x.herkunft.get_absolute_url }}">{{ x.herkunft.name }}</a> ({{ x.herkunft.region.name }})<br />
+                    <small>Region:</small> <a href="{{ x.region.get_absolute_url }}">{{x.region.name }}</a><br />
+                </td>
+              </tr>
+              <tr>
+                <th>Richtung:</th>
+                <td>
+                  <a href="x.fahrtrichtung.get_absolute_url">
+                    {{ x.fahrtrichtung }}
+                  </a>
+                </td>
+              </tr>
+            </table>
+          {% endfor %}
+        </div>
+          <div class="col-md-4">
+            {% if object.facs_in_phaidra %}
+            <div id="osd" style="height: 350px;"></div>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/openseadragon/2.4.1/openseadragon.min.js"></script>
+            <script type="text/javascript">
+              var viewer = OpenSeadragon({
+                id: "osd",
+                tileSources: [
+                {% for x in object.scan.all %}
+                {
+                  type: 'image',
+                  url: 'https://fedora.phaidra.univie.ac.at/fedora/objects/{{ x.phaidra_id }}/methods/bdef:Content/get'
+                }{% if not foorloop.last %},{% endif %}
+                {% endfor %}
+                ],
+                sequenceMode: true,
+                showReferenceStrip: true,
+                prefixUrl: "https://cdnjs.cloudflare.com/ajax/libs/openseadragon/2.4.1/images/"
+              });
+            </script>
+            {% else %}
+            <h3>Faksimimiles wurden noch nicht in Phaidra importiert</h3>
+            {% endif %}
+          </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <h3>Ladungen</h3>
+      </div>
+      <div class="card-body">
+        <table class="table table-responsive table-hover">
+          <thead>
+            <tr>
+              <th>LadungsId</th>
+              <th>LWId</th>
+              <th>Name/Bezeichnung</th>
+              <th>Herkunft</th>
+              <th>Menge</th>
+              <th>Gebinde</th>
+              <th>Anzahl</th>
+              <th>Einheit</th>
+              <th>Güter</th>
+              <th>fl</th>
+              <th>ß</th>
+              <th>d</th>
+              <th>Zielort</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for x in object.get_wl %}
+            <tr>
+              <td>
+                <a href="{{ x.ladung.get_absolute_url }}">{{ x.ladung.legacy_pk }}</a>
+              </td>
+              <td>
+                <a href="{{ x.warenladung.get_absolute_url }}">{{ x.warenladung.legacy_pk }}</a>
+              </td>
+              <td>
+                {% for y in x.personenLadung.all %}
+                  <a href="{{ y.person.get_absolute_url }}">{{ y.person }}</a>
+                {% endfor %}
+              </td>
+              <td>
+                {% for y in x.personenLadung.all %}
+                  {% if y.person.herkunft %}
+                    <a href="{{ y.person.herkunft.get_absolute_url }}">{{ y.person.herkunft }}</a>
+                  {% endif %}
+                {% endfor %}
+              </td>
+              <td>
+                {% for y in x.ladung.menge_gebinde.all %}
+                  {{ y.menge }}<br />
+                {% endfor %}
+              </td>
+              <td>
+                {% for y in x.ladung.menge_gebinde.all %}
+                  <a href="{{ y.gebinde.get_absolute_url }}">{{ y.gebinde }}</a><br />
+                {% endfor %}
+              </td>
+              <td>
+                {% if x.warenladung.anzahl_original %}
+                  <abbr title="{{ x.warenladung.anzahl_original }}">{{ x.warenladung.anzahl }}</abbr>
+                {% else %}
+                  {{ x.warenladung.anzahl }}
+                {% endif %}
+              </td>
+              <td><a href="{{ x.warenladung.menge_gebinde.get_absolute_url }}">{{ x.warenladung.einheit }}</a></td>
+              <td>
+                <a href="{{ x.warenladung.ware.get_absolute_url }}">{{ x.warenladung.ware }}</a>
+              </td>
+              <td>{{ x.warenladung.maut_fl }}</td>
+              <td>{{ x.warenladung.maut_s }}</td>
+              <td>{{ x.warenladung.maut_d }}</td>
+              <td>
+                {% for y in  x.ladung.zielort.all %}
+                  <a href="{{ y.get_absolute_url }}">{{ y }}</a>
+                {% endfor %}
+              </td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!-- <div class="col-md-6">
+        <div id="visualization" style="position: relative; height: 700px; background: #fafafa;"></div>
+        <script type="text/javascript">
+          showGraph("{% url 'netvis:graph' app_name=app_name model_name=class_name|lower pk=object.id %}", "visualization")
+        </script>
+    </div> -->
+
+
+  </div>
+</div>
+{% endblock custom %}
+{% endblock %}
