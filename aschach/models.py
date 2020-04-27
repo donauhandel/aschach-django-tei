@@ -30,6 +30,10 @@ class Uri(models.Model):
         max_length=300, blank=True,
         verbose_name="Normdata URL"
     )
+    domain = models.CharField(
+        max_length=300, blank=True,
+        verbose_name="Normdatequelle"
+    )
 
     class Meta:
         ordering = [
@@ -1105,7 +1109,6 @@ class NachName(models.Model):
     @classmethod
     def get_source_table(self):
         return "nachnamen"
-
 
     @classmethod
     def get_natural_primary_key(self):
