@@ -126,7 +126,10 @@ def as_arche_graph(res):
     g = Graph()
     sub = URIRef(get_arche_id(res))
     g.add(
-        (sub, acdh_ns.hasTitle, Literal(f"Angabe vom {res.date_german()}", lang=ARCHE_LANG))
+        (sub, acdh_ns.hasTitle, Literal(
+            f"Angabe vom {res.date_german()}  ({res})",
+            lang=ARCHE_LANG)
+        )
     )
     g.add((sub, RDF.type, acdh_ns.Resource))
     g.add(
