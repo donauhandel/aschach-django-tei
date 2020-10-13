@@ -78,7 +78,7 @@ def serialize_project():
     )
     g.add((aserles, RDF.type, acdh_ns.Person))
     g.add(
-        (bpamperl, acdh_ns.hasTitle, Literal("Beate Pamberl", lang=ARCHE_LANG))
+        (bpamperl, acdh_ns.hasTitle, Literal("Beate Pamperl", lang=ARCHE_LANG))
     )
     g.add(
         (bpamperl, acdh_ns.hasFirstName, Literal("Beate", lang=ARCHE_LANG))
