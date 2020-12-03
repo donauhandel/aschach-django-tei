@@ -1,74 +1,84 @@
 <div xmlns="http://www.tei-c.org/ns/1.0">
   <head type="ladung">Ladung (Waren, Personen)</head>
   <table>
-      <row>
-        <cell>LadungsId</cell>
-        <cell>LWId</cell>
-        <cell>Name/Bezeichnung</cell>
-        <cell>Herkunft</cell>
-        <cell>Menge</cell>
-        <cell>Gebinde</cell>
-        <cell>Anzahl</cell>
-        <cell>Einheit</cell>
-        <cell>Güter</cell>
-        <cell>fl</cell>
-        <cell>ß</cell>
-        <cell>d</cell>
-        <cell>Zielort</cell>
+      <row role="label">
+        <cell role="label">LadungsId</cell>
+        <cell role="label">LWId</cell>
+        <cell role="label">Name/Bezeichnung</cell>
+        <cell role="label">Herkunft</cell>
+        <cell role="label">Menge</cell>
+        <cell role="label">Gebinde</cell>
+        <cell role="label">Anzahl</cell>
+        <cell role="label">Einheit</cell>
+        <cell role="label">Güter</cell>
+        <cell role="label">fl</cell>
+        <cell role="label">ß</cell>
+        <cell role="label">d</cell>
+        <cell role="label">Zielort</cell>
       </row>
     {% for x in object.get_wl %}
-      <row>
-        <cell>
+      <row role="data">
+        <cell role="data">
           <idno>{{ x.ladung.legacy_pk }}</idno>
         </cell>
-        <cell>
+        <cell role="data">
           <idno>{{ x.warenladung.legacy_pk }}</idno>
         </cell>
-        <cell>
+        <cell role="data">
           {% for y in x.personenLadung.all %}
             <rs type="person" ref="#person__{{ y.person.id }}">{{ y.person }}</rs>
           {% endfor %}
         </cell>
-        <cell>
+        <cell role="data">
           {% for y in x.personenLadung.all %}
             {% if y.person.herkunft %}
               <rs type="place" ref="#place__{{ y.person.herkunft.id }}">{{ y.person.herkunft }}</rs>
             {% endif %}
           {% endfor %}
         </cell>
-        <cell>
+        <cell role="data">
           {% for y in x.ladung.menge_gebinde.all %}
             <num>{{ y.menge }}</num><lb />
           {% endfor %}
         </cell>
-        <cell>
+        <cell role="data">
           {% for y in x.ladung.menge_gebinde.all %}
             <rs type="gebinde" ref="#gebinde__{{ y.gebinde.id }}">{{ y.gebinde }}</rs><lb />
           {% endfor %}
         </cell>
-        <cell>
+        <cell role="data">
           {% if x.warenladung.anzahl_original %}
             <num>{{ x.warenladung.anzahl }}</num>
           {% else %}
             <num>{{ x.warenladung.anzahl }}</num>
           {% endif %}
         </cell>
-        <cell>
-          <rs type="wareneinheit" ref="#wareneinheit__{{ x.warenladung.einheit.id }}">{{ x.warenladung.einheit }}</rs>
+        <cell role="data">
+          {% if x.warenladung.einheit %}
+          <rs type="einheit" ref="#einheit__{{ x.warenladung.einheit.id }}">{{ x.warenladung.einheit }}</rs>
+          {% endif %}
         </cell>
-        <cell>
+        <cell role="data">
+          {% if x.warenladung.ware %}
           <rs type="ware" ref="#ware__{{ x.warenladung.ware.id }}">{{ x.warenladung.ware }}</rs>
+          {% endif %}
         </cell>
-        <cell>
-          <measure quantity="{{ x.warenladung.maut_fl }}" unit="gulden">{{ x.warenladung.maut_fl }}</measure>
+        <cell role="data">
+          {% if x.warenladung.maut_fl %}
+            <measure quantity="{{ x.warenladung.maut_fl }}" unit="gulden">{{ x.warenladung.maut_fl }}</measure>
+          {% endif %}
         </cell>
-        <cell>
+        <cell role="data">
+          {% if x.warenladung.maut_s %}
           <measure quantity="{{ x.warenladung.maut_s }}" unit="schilling">{{ x.warenladung.maut_s }}</measure>
+          {% endif %}
         </cell>
-        <cell>
+        <cell role="data">
+          {% if x.warenladung.maut_d %}
           <measure quantity="{{ x.warenladung.maut_d }}" unit="pfennig">{{ x.warenladung.maut_d }}</measure>
+          {% endif %}
         </cell>
-        <cell>
+        <cell role="data">
           {% for y in  x.ladung.zielort.all %}
             <rs type="place" ref="#place__{{ y.id }}">{{ y }}</rs>
           {% endfor %}
