@@ -139,7 +139,7 @@
               <tr>
                 <th>Richtung:</th>
                 <td>
-                  <a href="x.fahrtrichtung.get_absolute_url">
+                  <a href="{{ x.fahrtrichtung.get_absolute_url }}">
                     {{ x.fahrtrichtung }}
                   </a>
                 </td>
@@ -222,9 +222,11 @@
                 {% endfor %}
               </td>
               <td>
-                {% for y in x.ladung.menge_gebinde.all %}
-                  <a href="{{ y.gebinde.get_absolute_url }}">{{ y.gebinde }}</a><br />
-                {% endfor %}
+                {% if x.landung.menge_gebinde.all %}
+                  {% for y in x.ladung.menge_gebinde.all %}
+                    <a href="{{ y.gebinde.get_absolute_url }}">{{ y.gebinde }}</a><br />
+                  {% endfor %}
+                {% endif %}
               </td>
               <td>
                 {% if x.warenladung.anzahl_original %}
@@ -233,7 +235,11 @@
                   {{ x.warenladung.anzahl }}
                 {% endif %}
               </td>
-              <td><a href="{{ x.warenladung.menge_gebinde.get_absolute_url }}">{{ x.warenladung.einheit }}</a></td>
+              <td>
+                {% if x.warenladung.einheit %}
+                  <a href="{{ x.warenladung.einheit.get_absolute_url }}">{{ x.warenladung.einheit }}</a>
+                {% endif %}
+              </td>
               <td>
                 <a href="{{ x.warenladung.ware.get_absolute_url }}">{{ x.warenladung.ware }}</a>
               </td>
