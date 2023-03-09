@@ -14,3 +14,16 @@
 * set up a postgres database `aschach` and read in the (ToDo:) db-dump
 * provide required db-credentials as environment variables (see `djangobaseproject/settings.py`)
 * run `python manage.py startserver`.
+
+
+### building the image
+
+* `docker build -t aschach:latest .`
+* `docker build -t aschach:latest --no-cache .`
+
+
+### running the image
+
+To run the image you should provide an `.env` file to pass in needed environment variables; see example below:
+
+* `docker run -it -p 8020:8020 --env-file default.env --name aschach aschach:latest`
