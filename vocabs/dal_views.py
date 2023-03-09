@@ -1,5 +1,5 @@
 from dal import autocomplete
-from .models import SkosLabel, SkosConcept, SkosConceptScheme, SkosCollection
+from vocabs.models import SkosLabel, SkosConcept, SkosConceptScheme, SkosCollection
 from django.db.models import Q
 
 
@@ -58,7 +58,7 @@ class SKOSConstraintACNoHierarchy(autocomplete.Select2QuerySetView):
         try:
             selected_scheme = SkosConceptScheme.objects.get(dc_title=scheme)
             qs = SkosConcept.objects.filter(scheme=selected_scheme)
-        except Exception as e:
+        except:
             qs = SkosConcept.objects.all()
 
         if self.q:
@@ -81,7 +81,7 @@ class SKOSConstraintAC(autocomplete.Select2QuerySetView):
         try:
             selected_scheme = SkosConceptScheme.objects.get(dc_title=scheme)
             qs = SkosConcept.objects.filter(scheme=selected_scheme)
-        except Exception as e:
+        except:
             qs = SkosConcept.objects.all()
 
         if self.q:
