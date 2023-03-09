@@ -36,7 +36,7 @@ urlpatterns = [
         views.SkosConceptSchemeDelete.as_view(),
         name="skosconceptscheme_delete",
     ),
-    path("^label/", views.SkosLabelListView.as_view(), name="browse_skoslabels"),
+    path("label/", views.SkosLabelListView.as_view(), name="browse_skoslabels"),
     path(
         "label/<int:pk>", views.SkosLabelDetailView.as_view(), name="skoslabel_detail"
     ),
