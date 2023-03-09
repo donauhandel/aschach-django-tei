@@ -6,8 +6,23 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from django_tables2 import RequestConfig
 from .models import SkosConcept, SkosConceptScheme, SkosLabel, SkosCollection, Metadata
-from .forms import *
-from .tables import *
+from .forms import (
+    MetadataForm,
+    SkosCollectionForm,
+    SkosCollectionFormHelper,
+    SkosConceptFormHelper,
+    SkosConceptForm,
+    SkosConceptSchemeFormHelper,
+    SkosConceptSchemeForm,
+    SkosLabelFormHelper,
+    SkosLabelForm,
+)
+from .tables import (
+    SkosCollectionTable,
+    SkosConceptTable,
+    SkosConceptSchemeTable,
+    SkosLabelTable,
+)
 from .filters import (
     SkosConceptListFilter,
     SkosConceptSchemeListFilter,
@@ -15,12 +30,8 @@ from .filters import (
     SkosCollectionListFilter,
 )
 from browsing.browsing_utils import GenericListView, BaseCreateView, BaseUpdateView
-from .rdf_utils import *
-from django.shortcuts import render
+from .rdf_utils import graph_construct_qs
 from django.http import HttpResponse
-import rdflib
-from rdflib import Graph, Literal, BNode, Namespace, RDF, URIRef, RDFS, ConjunctiveGraph
-from rdflib.namespace import DC, FOAF, RDFS, SKOS
 import time
 import datetime
 
@@ -377,5 +388,5 @@ class SkosConceptDL(GenericListView):
         )
         g = graph_construct_qs(self.get_queryset())
         get_format = self.request.GET.get("format", default="pretty-xml")
-        result = g.serialize(destination=response, format=get_format)
+        g.serialize(destination=response, format=get_format)
         return response
