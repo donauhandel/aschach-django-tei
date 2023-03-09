@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django_filters',
     'django_tables2',
     'rest_framework',
+    'django_spaghetti',
     'leaflet',
     'netvis',
     'charts',
