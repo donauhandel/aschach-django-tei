@@ -158,7 +158,7 @@ MEDIA_URL = "/media/"
 
 ARCHE_SETTINGS = {
     'project_name': ROOT_URLCONF.split('.')[0],
-    'base_url': "https://id.acdh.oeaw.ac.at/donauhandel".format(ROOT_URLCONF.split('.')[0])
+    'base_url': "https://id.acdh.oeaw.ac.at/donauhandel"
 }
 
 ARCHE_BASE_URL = "https://id.acdh.oeaw.ac.at/donauhandel"

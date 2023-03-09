@@ -81,6 +81,7 @@ TEI_STUMP = """
 </TEI>
 """
 
+
 def custom_escape(somestring):
     un_escaped = unescape(somestring)
     return escape(un_escaped)
