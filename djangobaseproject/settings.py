@@ -1,16 +1,24 @@
 import os
+from pathlib import Path
+
 os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(
-    os.path.dirname(os.path.abspath(os.path.join(__file__, '../')))
-)
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 SHARED_URL = "https://shared.acdh.oeaw.ac.at/"
 PROJECT_NAME = "djangobaseproject"
-
-
 ACDH_IMPRINT_URL = "https://shared.acdh.oeaw.ac.at/acdh-common-assets/api/imprint.php?serviceID="
 REDMINE_ID = 17013
+SECRET_KEY = os.environ.get("SECRET_KEY", "vxAeLYeo")
+if os.environ.get("DEBUG"):
+    DEBUG = True
+else:
+    DEBUG = False
+ADD_ALLOWED_HOST = os.environ.get("ALLOWED_HOST", "*")
+ALLOWED_HOSTS = [
+    "127.0.0.1",
+    "0.0.0.0",
+    ADD_ALLOWED_HOST,
+]
 
 # Application definition
 
@@ -46,6 +54,13 @@ INSTALLED_APPS = [
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+SPAGHETTI_SAUCE = {
+    "apps": [
+        "aschach", "vocabs",
+    ],
+    "show_fields": False,
+    "exclude": {"auth": ["user"]},
+}
 
 
 REST_FRAMEWORK = {
@@ -106,6 +121,17 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        "NAME": os.environ.get("POSTGRES_DB", "aschach"),
+        "USER": os.environ.get("POSTGRES_USER", "postgres"),
+        "PASSWORD": os.environ.get("POSTGRES_PASSWORD", "postgres"),
+        "HOST": os.environ.get("POSTGRES_HOST", "localhost"),
+        "PORT": os.environ.get("POSTGRES_PORT", "5432"),
+    }
+}
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
@@ -124,10 +150,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles/')
-STATIC_URL = '/static/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
-MEDIA_URL = '/media/'
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles/")
+STATIC_URL = "/static/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
+MEDIA_URL = "/media/"
 
 ARCHE_SETTINGS = {
     'project_name': ROOT_URLCONF.split('.')[0],
