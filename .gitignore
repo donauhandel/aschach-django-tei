@@ -52,3 +52,4 @@ temp.html
 .mypy_cache
 .vscode
 secret.env
+db_dump.sql
