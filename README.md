@@ -1,3 +1,5 @@
+[![flake8 Lint](https://github.com/donauhandel/aschach-django-tei/actions/workflows/lint.yml/badge.svg)](https://github.com/donauhandel/aschach-django-tei/actions/workflows/lint.yml)
+
 # The Toll Registers of Aschach (1706-1740): Database and Analysis
 
 ## Data conversion repo

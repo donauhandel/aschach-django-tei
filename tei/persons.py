@@ -1,10 +1,9 @@
-import datetime
 import lxml.etree as ET
 
-from tei.partials import TEI_NSMAP, TEI_STUMP, custom_escape
+from tei.partials import TEI_NSMAP, TEI_STUMP
 
 
-class TeiPerson():
+class TeiPerson:
     def __init__(self, res):
         self.nsmap = TEI_NSMAP
         self.stump = TEI_STUMP
@@ -22,14 +21,14 @@ class TeiPerson():
         if self.res.vorname:
             f_name.text = f"{self.res.vorname.name}"
         else:
-            f_name.text = 'N.'
+            f_name.text = "N."
         name.append(f_name)
 
         f_name = ET.Element("{http://www.tei-c.org/ns/1.0}surname")
         if self.res.nachname:
             f_name.text = f"{self.res.nachname.name}"
         else:
-            f_name.text = 'N.'
+            f_name.text = "N."
         name.append(f_name)
 
         return item

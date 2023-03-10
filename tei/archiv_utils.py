@@ -1,10 +1,9 @@
-import datetime
 import lxml.etree as ET
 
 from django.conf import settings
 from django.template.loader import get_template
 
-from tei.partials import TEI_NSMAP, TEI_STUMP, custom_escape
+from tei.partials import TEI_NSMAP, TEI_STUMP
 from tei.persons import TeiPerson
 from tei.places import TeiPlace
 
