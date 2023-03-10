@@ -267,10 +267,10 @@
                   {% for x in object.get_places %}
                     {% if x.lat %}
                         var placeName = "{{ x.name }}"
-                        var lat = "{{ x.lat }}"
-                        var lng = "{{ x.lng }}"
+                        var lat = "{{ x.lat }}".replace(",", ".")
+                        var lng = "{{ x.lng }}".replace(",", ".")
                         L.marker([parseFloat(lat), parseFloat(lng)]).addTo(map)
-                        .bindPopup(placeName)
+                        .bindPopup(lat+", "+lng)
                     {% endif %}
                   {% endfor %}
                 };
