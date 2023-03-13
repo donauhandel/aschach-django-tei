@@ -12,5 +12,5 @@ class Command(BaseCommand):
         items = Angabe.objects.all()
         for x in tqdm(items, total=items.count()):
             waren = x.get_waren()
-            x.related_goods.set(waren)
+            x.related_good.set(waren)
         print("done")
