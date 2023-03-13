@@ -2346,7 +2346,10 @@ class Angabe(models.Model):
             if x not in personen:
                 personen.append(x)
         for x in self.get_wl:
-            x = x["personenLadung"][0].person
+            try:
+                x = x["personenLadung"][0].person
+            except IndexError:
+                continue
             if x not in personen:
                 personen.append(x)
         for x in self.fahrzeug.all():
@@ -2368,7 +2371,10 @@ class Angabe(models.Model):
                 if y not in places:
                     places.append(y)
         for x in self.get_wl:
-            x = x["personenLadung"][0].person
+            try:
+                x = x["personenLadung"][0].person
+            except IndexError:
+                continue
             if x.herkunft not in places:
                 places.append(x.herkunft)
         places = [x for x in places if x is not None]
