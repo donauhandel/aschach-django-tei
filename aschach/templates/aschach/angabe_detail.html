@@ -270,7 +270,7 @@
                         var lat = "{{ x.lat }}".replace(",", ".")
                         var lng = "{{ x.lng }}".replace(",", ".")
                         L.marker([parseFloat(lat), parseFloat(lng)]).addTo(map)
-                        .bindPopup(lat+", "+lng)
+                        .bindPopup(placeName)
                     {% endif %}
                   {% endfor %}
                 };
