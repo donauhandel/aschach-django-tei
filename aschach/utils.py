@@ -1,13 +1,16 @@
-# norm_patterns = {
-#     "GND": {
-#         "regex": "^https?://(?:[^.]*[.])?d-nb.info/gnd/([0-9A-Za-u\-]+)",
-#         "replace": "https://d-nb.info/gnd/{}",
-#     },
-#     "GeoNames": {
-#         "regex": "^https?://(?:[^.]*[.])?geonames[.]org/([0-9]+)",
-#         "replace": "https://www.geonames.org/{}/",
-#     },
-# }
+import requests
+import pandas as pd
+from io import StringIO
+
+ORTE_CSV_URL = "https://raw.githubusercontent.com/donauhandel/krems-data/main/orig_data/csvs/orte.csv"
+
+
+def get_krems_places():
+    r = requests.get(ORTE_CSV_URL)
+    df = pd.read_csv(StringIO(r.text))
+    df = df[df["aschachId"].notna()]
+    df["aschachId"].astype("int")
+    return df
 
 
 def get_dec(degr):
