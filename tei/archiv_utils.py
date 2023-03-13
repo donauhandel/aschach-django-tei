@@ -36,10 +36,10 @@ class MakeTeiDoc():
         ] = f"angabe__{self.res.get_formatted_nr()}.xml"
         prev_obj = self.res.get_prev_obj()
         if prev_obj:
-            root_el.attrib["prev"] = f"{ABS}/data/angabe__{prev_obj.get_formatted_nr()}.xml"
+            root_el.attrib["prev"] = f"{ABS}/data/angabe__{prev_obj}.xml"
         next_obj = self.res.get_next_obj()
         if next_obj:
-            root_el.attrib["next"] = f"{ABS}/data/angabe__{next_obj.get_formatted_nr()}.xml"
+            root_el.attrib["next"] = f"{ABS}/data/angabe__{next_obj}.xml"
 
         title_el = doc.xpath('.//tei:title[@type="main"]', namespaces=self.nsmap)[0]
         title_el.text = f"{self.res.date_german()}"
