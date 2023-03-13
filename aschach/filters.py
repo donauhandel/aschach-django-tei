@@ -98,7 +98,7 @@ class AngabeListFilter(django_filters.FilterSet):
         ),
     )
     related_place = django_filters.ModelMultipleChoiceFilter(
-        queryset=Person.objects.all(),
+        queryset=Ort.objects.all(),
         help_text=Angabe._meta.get_field("related_place").help_text,
         label=Angabe._meta.get_field("related_place").verbose_name,
         widget=autocomplete.Select2Multiple(
