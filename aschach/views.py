@@ -102,8 +102,21 @@ class AngabeListView(GenericListView):
     init_columns = [
         "legacy_pk",
         "datum",
+        "related_good",
+        "related_person",
+        "related_place",
     ]
-    enable_merge = True
+    exclude_columns = [
+        "bemerkungen",
+        "eiskalt",
+        "fahrzeug",
+        "hochwasser",
+        "ladung",
+        "nichts",
+        "orig_data_csv"
+    ]
+    enable_merge = False
+    template_name = "aschach/custom_list.html"
 
 
 class AngabeDetailView(BaseDetailView):

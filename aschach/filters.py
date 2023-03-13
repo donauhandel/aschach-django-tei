@@ -81,6 +81,30 @@ class AngabeListFilter(django_filters.FilterSet):
             url="aschach-ac:scan-autocomplete",
         ),
     )
+    related_good = django_filters.ModelMultipleChoiceFilter(
+        queryset=Ware.objects.all(),
+        help_text=Angabe._meta.get_field("related_good").help_text,
+        label=Angabe._meta.get_field("related_good").verbose_name,
+        widget=autocomplete.Select2Multiple(
+            url="aschach-ac:ware-autocomplete",
+        ),
+    )
+    related_person = django_filters.ModelMultipleChoiceFilter(
+        queryset=Person.objects.all(),
+        help_text=Angabe._meta.get_field("related_person").help_text,
+        label=Angabe._meta.get_field("related_person").verbose_name,
+        widget=autocomplete.Select2Multiple(
+            url="aschach-ac:person-autocomplete",
+        ),
+    )
+    related_place = django_filters.ModelMultipleChoiceFilter(
+        queryset=Person.objects.all(),
+        help_text=Angabe._meta.get_field("related_place").help_text,
+        label=Angabe._meta.get_field("related_place").verbose_name,
+        widget=autocomplete.Select2Multiple(
+            url="aschach-ac:ort-autocomplete",
+        ),
+    )
 
     class Meta:
         model = Angabe
@@ -100,6 +124,9 @@ class AngabeListFilter(django_filters.FilterSet):
             "nichts",
             "passagiere",
             "scan",
+            "related_good",
+            "related_person",
+            "related_place"
         ]
 
 

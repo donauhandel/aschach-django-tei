@@ -24,11 +24,11 @@ from .models import (
 class AngabeTable(tables.Table):
     id = tables.LinkColumn(verbose_name="ID")
     legacy_pk = tables.LinkColumn(verbose_name="Angabe-ID")
-    merge = MergeColumn(verbose_name="keep | remove", accessor="pk")
-    fahrzeug = tables.columns.ManyToManyColumn()
-    ladung = tables.columns.ManyToManyColumn()
-    passagiere = tables.columns.ManyToManyColumn()
-    scan = tables.columns.ManyToManyColumn()
+    ladung = tables.columns.ManyToManyColumn(verbose_name="Ladung")
+    related_good = tables.columns.ManyToManyColumn(verbose_name="Waren")
+    related_person = tables.columns.ManyToManyColumn(verbose_name="Personen")
+    related_place = tables.columns.ManyToManyColumn(verbose_name="Orte")
+    scan = tables.columns.ManyToManyColumn(verbose_name="Scans")
 
     class Meta:
         model = Angabe

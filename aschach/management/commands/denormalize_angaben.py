@@ -9,7 +9,7 @@ class Command(BaseCommand):
 
     # A command must define handle()
     def handle(self, *args, **options):
-        items = Angabe.objects.all()
+        items = Angabe.objects.filter(related_person=None)
         for x in tqdm(items, total=items.count()):
             waren = x.get_waren()
             x.related_good.set(waren)

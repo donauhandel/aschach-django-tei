@@ -1,0 +1,138 @@
+{% extends "webpage/base.html" %}
+{% load static %}
+{% load django_tables2 %}
+{% load browsing_extras %}
+{% load crispy_forms_field %}
+{% load crispy_forms_tags %}
+{% block title %}
+    Browse
+    {% if class_name == "Wab" %}
+        {{ class_name|upper }}
+    {% elif class_name == "Skos Concept" %}
+        Schlagwort
+    {% else %}
+        {{ class_name }}
+    {% endif %}
+{% endblock title %}
+{% block scriptHeader %}{% endblock scriptHeader %}
+{% block content %}
+    <script type="text/javascript">
+    $(document).ready(function() {
+        var fetchedParameter = "{{ table.page.number }}";
+        $("#goto option").each(function() {
+            if($(this).text() == fetchedParameter) {
+                $(this).attr('selected', 'selected');
+            }
+        });
+    });
+    </script>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h3>
+                            {% if class_name == "Skos Concept" %}
+                                Suche Schlagwort
+                            {% else %}
+                                Suche {% class_definition %}
+                            {% endif %}
+                            {% block list_title %}
+                            {% endblock list_title %}
+                        </h3>
+                        {% if user.is_authenticated %}
+                            {% if create_view_link %}
+                                <a class="btn btn-outline-secondary"  href="{{ create_view_link }} ">
+                                    {% if class_name == "Skos Concept" %}
+                                        Neues Schlagwort erstellen
+                                    {% else %}
+                                        Neue {{ class_name }} erstellen
+                                    {% endif %}
+                                </a>
+                            {% endif %}
+                        {% endif %}
+                        {% block customView %}
+                        {% endblock customView %}
+                        {% block create_button %}
+                        {% endblock create_button %}
+                        <!--Search mask-->
+                        {% load django_tables2 crispy_forms_tags %}
+                        <form action="." class="uniForm" method="get">
+                            {% crispy filter.form filter.form.helper %}
+                            {% if togglable_colums %}
+                                
+                                        {% if togglable_colums %}
+                                            <label for="column_selector">Weitere Spalten zur Anzeige in der rechten Tabelle auswählen:</label>
+                                            <select multiple
+                                                    class="form-control"
+                                                    name="columns"
+                                                    size="3"    
+                                                    id="column_selector" style="margin-bottom: 1em">
+                                                {% for key, value in togglable_colums.items %}
+                                                    {% if key == 'merge' and user.is_authenticated and enable_merge %}
+                                                        <option value="{{ key }}">
+                                                            {{ value }}
+                                                        </option>
+                                                    {% elif key == 'merge' and not user.is_authenticated %}
+                                                    {% elif key != 'merge' %}
+                                                        <option value="{{ key }}">
+                                                            {{ value }}
+                                                        </option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                        {% else %}
+                                        {% endif %}
+
+                            {% endif %}
+                            <a class="btn btn-primary"  href=".">Suche zurücksetzen</a>
+                            <button type="submit" class="btn btn-primary">Suchanfrage absenden</button>
+                        </form>
+                        
+                        {% include "browsing/partials/chart_form.html" %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8" id="results">
+                <div class="card">
+                    <div class="card-body table-responsive">
+                        {% with table.paginator.count as total %}
+                            <legend>
+                                Alle Treffer: {{ total }}
+                            </legend>
+                        {% endwith %}
+                        
+                        {% block table %}
+                            {% include "browsing/partials/table.html" %}
+                        {% endblock table %}
+                        {% block pagination.allpages %}
+                            {% include "browsing/partials/pagination.html" %}
+                        {% endblock pagination.allpages %}
+                        <div style="float: right;">
+                            {% include "browsing/partials/download_menu.html" %}
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+{% block scripts2 %}
+    <script src="{% static "browsing/js/set-form-attributes.js" %}"></script>
+    <script src="{% static "browsing/js/filter-for-blank-fields.js" %}"></script>
+  
+    <!-- Makes sure that "icontains" (enthält) is set as initial value for lookup filters -->
+    <!-- <script>
+        const lookUps = document.getElementsByClassName('select form-control custom-select');
+        for (lookUp in lookUps) {
+            const options = Array.prototype.slice.call(lookUps[lookUp].options, 0);
+            console.log(options)
+            for (let i = 0; i < options.length; ++i) {
+                if (options[i].text === '---------') {
+                    options[i].remove(); 
+                }
+            }
+        }
+    </script> -->
+{% endblock scripts2 %}

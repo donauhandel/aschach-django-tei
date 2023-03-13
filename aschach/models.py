@@ -2378,8 +2378,11 @@ class Angabe(models.Model):
                 x = x["personenLadung"][0].person
             except IndexError:
                 continue
-            if x.herkunft not in places:
-                places.append(x.herkunft)
+            try:
+                if x.herkunft not in places:
+                    places.append(x.herkunft)
+            except AttributeError:
+                continue
         places = [x for x in places if x is not None]
         return places
 
