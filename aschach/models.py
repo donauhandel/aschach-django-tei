@@ -43,318 +43,6 @@ class Uri(models.Model):
             return f"{self.id}"
 
 
-class Angabe(models.Model):
-    """Beschreibt eine Angabe"""
-
-    legacy_id = models.CharField(max_length=300, blank=True, verbose_name="Legacy ID")
-    legacy_pk = models.IntegerField(
-        blank=True,
-        null=True,
-        verbose_name="Primärschlüssel Alt",
-        help_text="Primärschlüssel Alt",
-    ).set_extra(
-        is_public=False,
-        data_lookup="angabenId",
-        arche_prop="hasNonLinkedIdentifier",
-        arche_prop_str_template="Primärschlüssel Alt: <value>",
-    )
-    datum_original = models.CharField(
-        max_length=250,
-        blank=True,
-        verbose_name="Datum (als Text)",
-        help_text="Datum (als Text)",
-    ).set_extra(
-        is_public=True,
-        data_lookup="datum",
-    )
-    datum = models.DateField(
-        blank=True,
-        null=True,
-        verbose_name="Datum",
-        help_text="Datum",
-    ).set_extra(
-        is_public=True,
-        arche_prop="hasCoverageStartDate",
-    )
-    quelle = models.CharField(
-        max_length=250,
-        blank=True,
-        verbose_name="Quelle",
-        help_text="Quelle",
-    ).set_extra(
-        is_public=True,
-        data_lookup="quelle",
-    )
-    bildnummern = models.CharField(
-        max_length=250,
-        blank=True,
-        verbose_name="Bildnummern",
-        help_text="Bildnummern",
-    ).set_extra(
-        is_public=True,
-        data_lookup="bildnummer",
-    )
-    bemerkungen = models.TextField(
-        blank=True,
-        null=True,
-        verbose_name="Bemerkungen",
-        help_text="Bemerkungen",
-    ).set_extra(
-        is_public=True,
-        data_lookup="angaben_bemerkungen___angabenId___bemerkungen#Property",
-        arche_prop="hasNote",
-    )
-    eiskalt = models.BooleanField(
-        default=False,
-        blank=True,
-        null=True,
-        verbose_name="Eiskalt",
-        help_text="Eiskalt",
-    ).set_extra(
-        is_public=True,
-        data_lookup="angaben_eisKalt___angabenId___eisKalt#Property",
-    )
-    fahrzeug = models.ManyToManyField(
-        "Fahrzeug",
-        related_name="rvn_angabe_fahrzeug_fahrzeug",
-        blank=True,
-        verbose_name="Fahrzeuge",
-        help_text="Fahrzeuge",
-    ).set_extra(
-        is_public=True,
-        data_lookup="angaben_fahrzeug___angabenId___fahrzeugId",
-    )
-    hochwasser = models.BooleanField(
-        default=False,
-        blank=True,
-        null=True,
-        verbose_name="Hochwasser",
-        help_text="Hochwasser",
-    ).set_extra(
-        is_public=True,
-        data_lookup="angaben_hochwasser___angabenId___hochwasser#Property",
-    )
-    ladung = models.ManyToManyField(
-        "Ladung",
-        related_name="rvn_angabe_ladung_ladung",
-        blank=True,
-        verbose_name="Ladung",
-        help_text="Ladung",
-    ).set_extra(
-        is_public=True,
-        data_lookup="angaben_ladung___angabenId___ladungId",
-    )
-    nichts = models.BooleanField(
-        default=False,
-        blank=True,
-        null=True,
-        verbose_name="Nichts",
-        help_text="Nichts",
-    ).set_extra(
-        is_public=True,
-        data_lookup="angaben_nichts___angabenId___nichts#Property",
-    )
-    passagiere = models.ManyToManyField(
-        "Person",
-        through="PersonAngabe",
-        related_name="rvn_angabe_ladung_ladung",
-        blank=True,
-        verbose_name="Passagiere",
-        help_text="Passagiere",
-    ).set_extra(
-        is_public=True,
-        data_lookup="angaben_passagiere___personenId___angabenId",
-    )
-    scan = models.ManyToManyField(
-        "Scan",
-        related_name="rvn_angabe_scan_scan",
-        blank=True,
-        verbose_name="Scan",
-        help_text="Scan",
-    ).set_extra(
-        is_public=True,
-        data_lookup="angaben_scans___angabenId___scanId",
-    )
-    orig_data_csv = models.TextField(
-        blank=True, null=True, verbose_name="The original data"
-    ).set_extra(is_public=True)
-
-    class Meta:
-        ordering = [
-            "id",
-        ]
-        verbose_name = "Angabe"
-
-    @cached_property
-    def get_idno(self):
-        try:
-            idno = f"{self.scan.values_list('datei_name')[0]}".split("_")[0][2:]
-        except:
-            idno = "Hs999"
-        return idno
-
-    def __str__(self):
-        if self.id:
-            return f"{self.get_idno}, S. {self.bildnummern}, ID {self.legacy_pk}"
-        else:
-            return "{}".format(self.legacy_id)
-
-    def save(self, *args, **kwargs):
-        date_str = self.datum_original
-        try:
-            date_obj = parse(date_str)
-        except:
-            date_obj = parse("1000-01-01")
-        self.datum = date_obj
-        super(Angabe, self).save(*args, **kwargs)
-
-    def as_tei_class(self):
-        return MakeTeiDoc(self)
-
-    def as_arche(self):
-        return as_arche_graph(self)
-
-    def as_tei_node(self):
-        my_node = MakeTeiDoc(self)
-        return my_node.export_full_doc()
-
-    def as_tei(self):
-        return ET.tostring(self.as_tei_node(), pretty_print=True, encoding="UTF-8")
-
-    def date_german(self):
-        return format_date(self.datum, locale="de_DE", format="full")
-
-    def get_formatted_nr(self):
-        return f"{self.legacy_pk:06}"
-
-    def facs_in_phaidra(self):
-        ph_ids = [x.phaidra_id for x in self.scan.all()]
-        if len(ph_ids) > 0:
-            return ph_ids
-        else:
-            return False
-
-    def field_dict(self):
-        return model_to_dict(self)
-
-    @classmethod
-    def get_listview_url(self):
-        return reverse("aschach:angabe_browse")
-
-    def get_tei_url(self):
-        return reverse("aschach:angabe_xml_tei", kwargs={"pk": self.id})
-
-    @classmethod
-    def get_source_table(self):
-        return "angaben"
-
-    @classmethod
-    def get_natural_primary_key(self):
-        return "legacy_id"
-
-    @classmethod
-    def get_createview_url(self):
-        return reverse("aschach:angabe_create")
-
-    @cached_property
-    def get_wl(self):
-        wl = []
-        for x in self.ladung.all():
-            for y in WareLadung.objects.filter(ladung=x.id):
-                wl.append(
-                    {
-                        "ladung": x,
-                        "warenladung": y,
-                        "personenLadung": PersonLadung.objects.filter(ladung=x.id),
-                    }
-                )
-        return wl
-
-    @cached_property
-    def get_waren_einheiten(self):
-        waren = []
-        einheiten = []
-        for x in self.get_wl:
-            if not x["warenladung"].ware in waren:
-                waren.append(x["warenladung"].ware)
-            if (
-                not x["warenladung"].einheit in einheiten and x["warenladung"].einheit is not None
-            ):
-                einheiten.append(x["warenladung"].einheit)
-        return {"waren": waren, "einheiten": einheiten}
-
-    @cached_property
-    def get_persons(self):
-        personen = []
-        for x in self.passagiere.all():
-            if x not in personen:
-                personen.append(x)
-        for x in self.get_wl:
-            x = x["personenLadung"][0].person
-            if x not in personen:
-                personen.append(x)
-        for x in self.fahrzeug.all():
-            if x.person not in personen:
-                personen.append(x.person)
-        personen = [x for x in personen if x is not None]
-        return personen
-
-    @cached_property
-    def get_places(self):
-        places = []
-        for x in self.fahrzeug.all():
-            if x.herkunft not in places:
-                places.append(x.herkunft)
-            if x.zielort not in places:
-                places.append(x.zielort)
-        for x in self.ladung.all():
-            for y in x.zielort.all():
-                if y not in places:
-                    places.append(y)
-        for x in self.get_wl:
-            x = x["personenLadung"][0].person
-            if x.herkunft not in places:
-                places.append(x.herkunft)
-        places = [x for x in places if x is not None]
-        return places
-
-    def get_absolute_url(self):
-        return reverse("aschach:angabe_detail", kwargs={"pk": self.id})
-
-    def get_arche_url(self):
-        return reverse("aschach:angabe_arche", kwargs={"pk": self.id})
-
-    def get_delete_url(self):
-        return reverse("aschach:angabe_delete", kwargs={"pk": self.id})
-
-    def get_edit_url(self):
-        return reverse("aschach:angabe_edit", kwargs={"pk": self.id})
-
-    def get_next(self):
-        next = self.__class__.objects.filter(id__gt=self.id)
-        if next:
-            return reverse("aschach:angabe_detail", kwargs={"pk": next.first().id})
-        return False
-
-    def get_next_obj(self):
-        next = self.__class__.objects.filter(id__gt=self.id)
-        if next:
-            return next.first()
-        return False
-
-    def get_prev(self):
-        prev = self.__class__.objects.filter(id__lt=self.id).order_by("-id")
-        if prev:
-            return reverse("aschach:angabe_detail", kwargs={"pk": prev.first().id})
-        return False
-
-    def get_prev_obj(self):
-        prev = self.__class__.objects.filter(id__lt=self.id).order_by("-id")
-        if prev:
-            return prev.first()
-        return False
-
-
 class SchiffTyp(models.Model):
     legacy_id = models.CharField(max_length=300, blank=True, verbose_name="Legacy ID")
     legacy_pk = models.IntegerField(
@@ -2401,4 +2089,329 @@ class WareLadung(models.Model):
         prev = self.__class__.objects.filter(id__lt=self.id).order_by("-id")
         if prev:
             return reverse("aschach:wareladung_detail", kwargs={"pk": prev.first().id})
+        return False
+
+
+class Angabe(models.Model):
+    """Beschreibt eine Angabe"""
+
+    legacy_id = models.CharField(max_length=300, blank=True, verbose_name="Legacy ID")
+    legacy_pk = models.IntegerField(
+        blank=True,
+        null=True,
+        verbose_name="Primärschlüssel Alt",
+        help_text="Primärschlüssel Alt",
+    ).set_extra(
+        is_public=False,
+        data_lookup="angabenId",
+        arche_prop="hasNonLinkedIdentifier",
+        arche_prop_str_template="Primärschlüssel Alt: <value>",
+    )
+    datum_original = models.CharField(
+        max_length=250,
+        blank=True,
+        verbose_name="Datum (als Text)",
+        help_text="Datum (als Text)",
+    ).set_extra(
+        is_public=True,
+        data_lookup="datum",
+    )
+    datum = models.DateField(
+        blank=True,
+        null=True,
+        verbose_name="Datum",
+        help_text="Datum",
+    ).set_extra(
+        is_public=True,
+        arche_prop="hasCoverageStartDate",
+    )
+    quelle = models.CharField(
+        max_length=250,
+        blank=True,
+        verbose_name="Quelle",
+        help_text="Quelle",
+    ).set_extra(
+        is_public=True,
+        data_lookup="quelle",
+    )
+    bildnummern = models.CharField(
+        max_length=250,
+        blank=True,
+        verbose_name="Bildnummern",
+        help_text="Bildnummern",
+    ).set_extra(
+        is_public=True,
+        data_lookup="bildnummer",
+    )
+    bemerkungen = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name="Bemerkungen",
+        help_text="Bemerkungen",
+    ).set_extra(
+        is_public=True,
+        data_lookup="angaben_bemerkungen___angabenId___bemerkungen#Property",
+        arche_prop="hasNote",
+    )
+    eiskalt = models.BooleanField(
+        default=False,
+        blank=True,
+        null=True,
+        verbose_name="Eiskalt",
+        help_text="Eiskalt",
+    ).set_extra(
+        is_public=True,
+        data_lookup="angaben_eisKalt___angabenId___eisKalt#Property",
+    )
+    fahrzeug = models.ManyToManyField(
+        "Fahrzeug",
+        related_name="rvn_angabe_fahrzeug_fahrzeug",
+        blank=True,
+        verbose_name="Fahrzeuge",
+        help_text="Fahrzeuge",
+    ).set_extra(
+        is_public=True,
+        data_lookup="angaben_fahrzeug___angabenId___fahrzeugId",
+    )
+    hochwasser = models.BooleanField(
+        default=False,
+        blank=True,
+        null=True,
+        verbose_name="Hochwasser",
+        help_text="Hochwasser",
+    ).set_extra(
+        is_public=True,
+        data_lookup="angaben_hochwasser___angabenId___hochwasser#Property",
+    )
+    ladung = models.ManyToManyField(
+        "Ladung",
+        related_name="rvn_angabe_ladung_ladung",
+        blank=True,
+        verbose_name="Ladung",
+        help_text="Ladung",
+    ).set_extra(
+        is_public=True,
+        data_lookup="angaben_ladung___angabenId___ladungId",
+    )
+    nichts = models.BooleanField(
+        default=False,
+        blank=True,
+        null=True,
+        verbose_name="Nichts",
+        help_text="Nichts",
+    ).set_extra(
+        is_public=True,
+        data_lookup="angaben_nichts___angabenId___nichts#Property",
+    )
+    passagiere = models.ManyToManyField(
+        "Person",
+        through="PersonAngabe",
+        related_name="rvn_angabe_ladung_ladung",
+        blank=True,
+        verbose_name="Passagiere",
+        help_text="Passagiere",
+    ).set_extra(
+        is_public=True,
+        data_lookup="angaben_passagiere___personenId___angabenId",
+    )
+    scan = models.ManyToManyField(
+        "Scan",
+        related_name="rvn_angabe_scan_scan",
+        blank=True,
+        verbose_name="Scan",
+        help_text="Scan",
+    ).set_extra(
+        is_public=True,
+        data_lookup="angaben_scans___angabenId___scanId",
+    )
+    orig_data_csv = models.TextField(
+        blank=True, null=True, verbose_name="The original data"
+    ).set_extra(is_public=True)
+
+    related_goods = models.ManyToManyField(
+        "Ware",
+        blank=True,
+        verbose_name="Waren",
+        help_text="Aufzählung der genannten Waren",
+    )
+
+    class Meta:
+        ordering = [
+            "id",
+        ]
+        verbose_name = "Angabe"
+
+    @cached_property
+    def get_idno(self):
+        try:
+            idno = f"{self.scan.values_list('datei_name')[0]}".split("_")[0][2:]
+        except:
+            idno = "Hs999"
+        return idno
+
+    def __str__(self):
+        if self.id:
+            return f"{self.get_idno}, S. {self.bildnummern}, ID {self.legacy_pk}"
+        else:
+            return "{}".format(self.legacy_id)
+
+    def save(self, *args, **kwargs):
+        date_str = self.datum_original
+        try:
+            date_obj = parse(date_str)
+        except:
+            date_obj = parse("1000-01-01")
+        self.datum = date_obj
+        super(Angabe, self).save(*args, **kwargs)
+
+    def as_tei_class(self):
+        return MakeTeiDoc(self)
+
+    def as_arche(self):
+        return as_arche_graph(self)
+
+    def as_tei_node(self):
+        my_node = MakeTeiDoc(self)
+        return my_node.export_full_doc()
+
+    def as_tei(self):
+        return ET.tostring(self.as_tei_node(), pretty_print=True, encoding="UTF-8")
+
+    def date_german(self):
+        return format_date(self.datum, locale="de_DE", format="full")
+
+    def get_formatted_nr(self):
+        return f"{self.legacy_pk:06}"
+
+    def facs_in_phaidra(self):
+        ph_ids = [x.phaidra_id for x in self.scan.all()]
+        if len(ph_ids) > 0:
+            return ph_ids
+        else:
+            return False
+
+    def field_dict(self):
+        return model_to_dict(self)
+
+    @classmethod
+    def get_listview_url(self):
+        return reverse("aschach:angabe_browse")
+
+    def get_tei_url(self):
+        return reverse("aschach:angabe_xml_tei", kwargs={"pk": self.id})
+
+    @classmethod
+    def get_source_table(self):
+        return "angaben"
+
+    @classmethod
+    def get_natural_primary_key(self):
+        return "legacy_id"
+
+    @classmethod
+    def get_createview_url(self):
+        return reverse("aschach:angabe_create")
+
+    @cached_property
+    def get_wl(self):
+        wl = []
+        for x in self.ladung.all():
+            for y in WareLadung.objects.filter(ladung=x.id):
+                wl.append(
+                    {
+                        "ladung": x,
+                        "warenladung": y,
+                        "personenLadung": PersonLadung.objects.filter(ladung=x.id),
+                    }
+                )
+        return wl
+
+    @cached_property
+    def get_waren_einheiten(self):
+        waren = []
+        einheiten = []
+        for x in self.get_wl:
+            if not x["warenladung"].ware in waren:
+                waren.append(x["warenladung"].ware)
+            if (
+                not x["warenladung"].einheit in einheiten and x["warenladung"].einheit is not None
+            ):
+                einheiten.append(x["warenladung"].einheit)
+        return {"waren": waren, "einheiten": einheiten}
+
+    @cached_property
+    def get_persons(self):
+        personen = []
+        for x in self.passagiere.all():
+            if x not in personen:
+                personen.append(x)
+        for x in self.get_wl:
+            x = x["personenLadung"][0].person
+            if x not in personen:
+                personen.append(x)
+        for x in self.fahrzeug.all():
+            if x.person not in personen:
+                personen.append(x.person)
+        personen = [x for x in personen if x is not None]
+        return personen
+
+    @cached_property
+    def get_places(self):
+        places = []
+        for x in self.fahrzeug.all():
+            if x.herkunft not in places:
+                places.append(x.herkunft)
+            if x.zielort not in places:
+                places.append(x.zielort)
+        for x in self.ladung.all():
+            for y in x.zielort.all():
+                if y not in places:
+                    places.append(y)
+        for x in self.get_wl:
+            x = x["personenLadung"][0].person
+            if x.herkunft not in places:
+                places.append(x.herkunft)
+        places = [x for x in places if x is not None]
+        return places
+
+    def get_waren(self):
+        ladungen = self.ladung.all()
+        wl = WareLadung.objects.filter(ladung__in=ladungen)
+        waren = Ware.objects.filter(rvn_wareladung_ware_ware__in=wl).distinct()
+        return waren
+
+    def get_absolute_url(self):
+        return reverse("aschach:angabe_detail", kwargs={"pk": self.id})
+
+    def get_arche_url(self):
+        return reverse("aschach:angabe_arche", kwargs={"pk": self.id})
+
+    def get_delete_url(self):
+        return reverse("aschach:angabe_delete", kwargs={"pk": self.id})
+
+    def get_edit_url(self):
+        return reverse("aschach:angabe_edit", kwargs={"pk": self.id})
+
+    def get_next(self):
+        next = self.__class__.objects.filter(id__gt=self.id)
+        if next:
+            return reverse("aschach:angabe_detail", kwargs={"pk": next.first().id})
+        return False
+
+    def get_next_obj(self):
+        next = self.__class__.objects.filter(id__gt=self.id)
+        if next:
+            return next.first()
+        return False
+
+    def get_prev(self):
+        prev = self.__class__.objects.filter(id__lt=self.id).order_by("-id")
+        if prev:
+            return reverse("aschach:angabe_detail", kwargs={"pk": prev.first().id})
+        return False
+
+    def get_prev_obj(self):
+        prev = self.__class__.objects.filter(id__lt=self.id).order_by("-id")
+        if prev:
+            return prev.first()
         return False
