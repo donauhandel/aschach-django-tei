@@ -2228,11 +2228,26 @@ class Angabe(models.Model):
         blank=True, null=True, verbose_name="The original data"
     ).set_extra(is_public=True)
 
-    related_goods = models.ManyToManyField(
+    related_good = models.ManyToManyField(
         "Ware",
         blank=True,
         verbose_name="Waren",
-        help_text="Aufzählung der genannten Waren",
+        related_name="mentioned_in_Angabe",
+        help_text="Auflistung der genannten Waren",
+    )
+    related_person = models.ManyToManyField(
+        "Person",
+        blank=True,
+        related_name="mentioned_in_Angabe",
+        verbose_name="Person",
+        help_text="Auflistung der genannten Personen",
+    )
+    related_place = models.ManyToManyField(
+        "Ort",
+        blank=True,
+        verbose_name="Ort",
+        related_name="mentioned_in_Angabe",
+        help_text="Auflistung der genannten Ort",
     )
 
     class Meta:
