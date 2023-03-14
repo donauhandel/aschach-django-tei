@@ -5,6 +5,10 @@ server {
     location /static/ {
         autoindex on;
         alias /opt/app/staticfiles/;
+    }
+
+    location /media/ {
+        autoindex on;
         alias /opt/app/media/;
     }
 
