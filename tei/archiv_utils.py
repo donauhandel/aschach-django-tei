@@ -11,9 +11,10 @@ ABS = settings.ARCHE_BASE_URL
 
 
 class MakeTeiDoc():
-    def __init__(self, res):
+    def __init__(self, res, full=True):
         self.nsmap = TEI_NSMAP
         self.stump = TEI_STUMP
+        self.full = full
         self.res = res
         self.phaidra = settings.PHAIDRA_BASE
         self.title = f"{self.res.date_german()}"
@@ -75,30 +76,30 @@ class MakeTeiDoc():
         origin_child.attrib['when-iso'] = f"{self.res.datum}"
         origin_child.text = f"{self.res.date_german()}"
         origin_el.append(origin_child)
+        if self.full:
+            back_el = doc.xpath('.//tei:back', namespaces=self.nsmap)[0]
+            listperson_el = ET.Element("{http://www.tei-c.org/ns/1.0}listPerson")
+            listplace_el = ET.Element("{http://www.tei-c.org/ns/1.0}listPlace")
+            back_el.append(listperson_el)
+            back_el.append(listplace_el)
 
-        back_el = doc.xpath('.//tei:back', namespaces=self.nsmap)[0]
-        listperson_el = ET.Element("{http://www.tei-c.org/ns/1.0}listPerson")
-        listplace_el = ET.Element("{http://www.tei-c.org/ns/1.0}listPlace")
-        back_el.append(listperson_el)
-        back_el.append(listplace_el)
+            for x in self.res.get_persons:
+                p_el = TeiPerson(x).get_el()
+                listperson_el.append(p_el)
 
-        for x in self.res.get_persons:
-            p_el = TeiPerson(x).get_el()
-            listperson_el.append(p_el)
+            for x in self.res.get_places:
+                p_el = TeiPlace(x).get_el()
+                listplace_el.append(p_el)
 
-        for x in self.res.get_places:
-            p_el = TeiPlace(x).get_el()
-            listplace_el.append(p_el)
-
-        xeno = doc.xpath('.//tei:teiHeader', namespaces=self.nsmap)[0]
-        for x in self.res.get_waren_einheiten['waren']:
-            xeno.append(x.as_skos())
-        for x in self.res.get_waren_einheiten['einheiten']:
-            xeno.append(x.as_skos())
+            xeno = doc.xpath('.//tei:teiHeader', namespaces=self.nsmap)[0]
+            for x in self.res.get_waren_einheiten['waren']:
+                xeno.append(x.as_skos())
+            for x in self.res.get_waren_einheiten['einheiten']:
+                xeno.append(x.as_skos())
 
         return doc
 
-    def pop_body(self):
+    def pop_body(self, full=True):
         doc = self.tree
         body_el = doc.xpath('.//tei:body', namespaces=self.nsmap)[0]
         div_el = ET.Element("{http://www.tei-c.org/ns/1.0}div")
@@ -111,8 +112,8 @@ class MakeTeiDoc():
         body_el.append(div_el)
         return doc
 
-    def export_full_doc(self):
-        return self.pop_body()
+    def export_full_doc(self, full=True):
+        return self.pop_body(full=full)
 
     def export_full_doc_str(self, file="temp.xml"):
         with open(file, 'wb') as f:
