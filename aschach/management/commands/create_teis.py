@@ -25,11 +25,13 @@ class Command(BaseCommand):
             file_path = os.path.join(tei_out, f"{x}.xml")
             items = Angabe.objects.filter(scan__ordner=x).distinct().order_by('datum')
             datum = f"{items.first().datum}"
-            year = datum[:3]
-            idno = x[2:]
+            year = datum[:4]
+            idno = x.replace("DepHarr_H", "")
             title_str = f"Aschacher Mautprotokoll {year} (Oberösterreichisches Landesarchiv, Depot Harrach, Handschrift {idno})"
             context = {
                 "title": title_str,
+                "year": year,
+                "file_name": f"{x}.xml",
                 "items": items.count(),
                 "from": f"{items.first().datum}",
                 "to": f"{items.last().datum}",
@@ -37,7 +39,7 @@ class Command(BaseCommand):
                 "teis": []
             }
             print(f"gathering data for {title_str}")
-            for item in tqdm(items[100:120], total=items.count()):
+            for item in tqdm(items, total=items.count()):
                 context["teis"].append(item.as_tei(full=False).decode('utf-8'))
             context["item_count"] = len(context["teis"])
             print(f"writing {context['item_count']} items into {file_path}")

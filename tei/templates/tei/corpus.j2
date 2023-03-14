@@ -1,10 +1,10 @@
-<teiCorpus version="3.3.0" xmlns="http://www.tei-c.org/ns/1.0">
-    <teiHeader>
-       <fileDesc>
-          <titleStmt>
-             <title type="main"></title>
-             <title type="sub">Donauhandel - Aschacher Mautprotokolle</title>
-                      <respStmt>
+<teiCorpus version="3.3.0" xmlns="http://www.tei-c.org/ns/1.0" xml:id="{{ file_name }}">
+   <teiHeader>
+      <fileDesc>
+         <titleStmt>
+            <title type="main">{{ title }}</title>
+            <title type="sub">Donauhandel - Aschacher Mautprotokolle</title>
+            <respStmt>
                <resp>Projektleitung, Datenerhebung</resp>
                <persName key="https://d-nb.info/gnd/13140007X">
                   <forename>Peter</forename>
@@ -47,17 +47,19 @@
          <sourceDesc>
             <msDesc>
                <msIdentifier>
-                  <institution key="https://d-nb.info/gnd/2020619-7">Oberösterreichisches Landesarchiv (OÖLA)</institution>
+                  <institution key="https://d-nb.info/gnd/2020619-7">Oberösterreichisches Landesarchiv (OÖLA)
+                  </institution>
                   <repository>Depot Harrach</repository>
                   <idno>Handschrift {{ idno }}</idno>
                </msIdentifier>
                <history>
-                  <origin><date from="{{ object.start_date }}" to="{{ object.end_date }}>{{ object.date_german }}</date></origin>
+                  <origin>
+                     <date from="{{ from }}" to="{{ to }}">{{ year }}</date>
+                  </origin>
                </history>
             </msDesc>
          </sourceDesc>
       </fileDesc>
-     {% for x in teis %}
-     {{ x|safe }}
-     {% endfor %}
+   </teiHeader>
+   {% for x in teis %}{{ x|safe }}{% endfor %}
 </teiCorpus>
