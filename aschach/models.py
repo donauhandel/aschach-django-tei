@@ -2267,18 +2267,18 @@ class Angabe(models.Model):
         self.datum = date_obj
         super(Angabe, self).save(*args, **kwargs)
 
-    def as_tei_class(self):
-        return MakeTeiDoc(self)
+    def as_tei_class(self, full=True):
+        return MakeTeiDoc(self, full=full)
 
     def as_arche(self):
         return as_arche_graph(self)
 
-    def as_tei_node(self):
-        my_node = MakeTeiDoc(self)
-        return my_node.export_full_doc()
+    def as_tei_node(self, full=True):
+        my_node = MakeTeiDoc(self, full=full)
+        return my_node.export_full_doc(full=full)
 
-    def as_tei(self):
-        return ET.tostring(self.as_tei_node(), pretty_print=True, encoding="UTF-8")
+    def as_tei(self, full=True):
+        return ET.tostring(self.as_tei_node(full=full), pretty_print=True, encoding="UTF-8")
 
     def date_german(self):
         return format_date(self.datum, locale="de_DE", format="full")
