@@ -41,3 +41,26 @@
     acdh:hasLastName "Andorfer"@de ;
     acdh:hasTitle "Peter Andorfer"@de .
 
+<https://id.acdh.oeaw.ac.at/donauhandel-aschach/listperson.xml> a acdh:Resource ;
+    acdh:hasCategory <https://vocabs.acdh.oeaw.ac.at/archecategory/text/tei> ;
+    acdh:hasDepositor <https://d-nb.info/gnd/13140007X> ;
+    acdh:hasDescription "XML/TEI Serialisierung der in den Quellen erwähnten Personen."@de ;
+    acdh:hasLicense <https://vocabs.acdh.oeaw.ac.at/archelicenses/cc-by-4-0> ;
+    acdh:hasLicensor <https://d-nb.info/gnd/13140007X> ;
+    acdh:hasMetadataCreator <https://d-nb.info/gnd/1043833846> ;
+    acdh:hasOwner <https://d-nb.info/gnd/13140007X> ;
+    acdh:hasRightsHolder <https://d-nb.info/gnd/13140007X> ;
+    acdh:hasTitle "Register der in den Quellen erwähnten Personen"@de ;
+    acdh:isPartOf <https://id.acdh.oeaw.ac.at/donauhandel-aschach> .
+
+<https://id.acdh.oeaw.ac.at/donauhandel-aschach/listplace.xml> a acdh:Resource ;
+    acdh:hasCategory <https://vocabs.acdh.oeaw.ac.at/archecategory/text/tei> ;
+    acdh:hasDepositor <https://d-nb.info/gnd/13140007X> ;
+    acdh:hasDescription "XML/TEI Serialisierung der in den Quellen erwähnten Orten."@de ;
+    acdh:hasLicense <https://vocabs.acdh.oeaw.ac.at/archelicenses/cc-by-4-0> ;
+    acdh:hasLicensor <https://d-nb.info/gnd/13140007X> ;
+    acdh:hasMetadataCreator <https://d-nb.info/gnd/1043833846> ;
+    acdh:hasOwner <https://d-nb.info/gnd/13140007X> ;
+    acdh:hasRightsHolder <https://d-nb.info/gnd/13140007X> ;
+    acdh:hasTitle "Register der in den Quellen erwähnten Orten"@de ;
+    acdh:isPartOf <https://id.acdh.oeaw.ac.at/donauhandel-aschach> .

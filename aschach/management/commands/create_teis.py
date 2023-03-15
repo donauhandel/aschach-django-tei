@@ -79,6 +79,8 @@ class Command(BaseCommand):
         for x in list(hs):
             file_path = os.path.join(tei_out, f"{x}.xml")
             items = Angabe.objects.filter(scan__ordner=x).distinct().order_by("datum")
+            better_date = items.filter(datum__gt="1000-01-01").order_by('datum')
+            datum = f"{better_date.first().datum}"
             datum = f"{items.first().datum}"
             year = datum[:4]
             idno = x.replace("DepHarr_H", "")
