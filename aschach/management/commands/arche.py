@@ -33,22 +33,19 @@ class Command(BaseCommand):
             idno = x.replace("DepHarr_H", "")
             title_str = f"Aschacher Mautprotokoll {year} (Oberösterreichisches Landesarchiv, Depot Harrach, Handschrift {idno})"
             file_name = f"{x}.xml"
-            # context = {
-            #     "title": title_str,
-            #     "year": year,
-            #     "file_name": f"{x}.xml",
-            #     "items": items.count(),
-            #     "from": f"{items.first().datum}",
-            #     "to": f"{items.last().datum}",
-            #     "idno": idno,
-            #     "teis": []
-            # }
             subj = URIRef(f"{BASE_URI}/{file_name}")
+            description = f"XML/TEI Serialisierung von {items.count()} Einträgen im Aschacher Mautprotokoll aus dem Jahr {year}."
             g.add((
                 subj, RDF.type, ARCHE["Resource"]
             ))
             g.add((
                 subj, ARCHE["hasTitle"], Literal(title_str, lang="de")
+            ))
+            g.add((
+                subj, ARCHE["hasExtent"], Literal(f"{items.count()} Einträge", lang="de")
+            ))
+            g.add((
+                subj, ARCHE["hasDescription"], Literal(description, lang="de")
             ))
             g.add((
                 subj, ARCHE["hasCoverageStartDate"], Literal(f"{items.first().datum}", datatype=XSD.date)
@@ -66,10 +63,19 @@ class Command(BaseCommand):
                 subj, ARCHE["hasLicensor"], URIRef("https://d-nb.info/gnd/13140007X")
             ))
             g.add((
-                subj, ARCHE["hasLicense"], URIRef("https://creativecommons.org/licenses/by/4.0/")
+                subj, ARCHE["hasLicense"], URIRef("https://vocabs.acdh.oeaw.ac.at/archelicenses/cc-by-4-0")
             ))
             g.add((
                 subj, ARCHE["isPartOf"], URIRef(BASE_URI)
+            ))
+            g.add((
+                subj, ARCHE["hasMetadataCreator"], URIRef("https://d-nb.info/gnd/1043833846")
+            ))
+            g.add((
+                subj, ARCHE["hasDepositor"], URIRef("https://d-nb.info/gnd/13140007X")
+            ))
+            g.add((
+                subj, ARCHE["hasCategory"], URIRef("https://vocabs.acdh.oeaw.ac.at/archecategory/text/tei")
             ))
             print(f"gathering data for {title_str}")
         g.serialize(os.path.join(tei_out, "arche.ttl"))
