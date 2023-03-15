@@ -1,0 +1,43 @@
+@prefix acdh: <https://vocabs.acdh.oeaw.ac.at/schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://id.acdh.oeaw.ac.at/donauhandel-aschach> a acdh:TopCollection ;
+    acdh:hasContact <https://d-nb.info/gnd/13140007X> ;
+    acdh:hasCoverageEndDate "1740-12-31"^^xsd:date ;
+    acdh:hasCoverageStartDate "1652-01-01"^^xsd:date ;
+    acdh:hasCreator <https://d-nb.info/gnd/103048337X>,
+        <https://d-nb.info/gnd/1031446176>,
+        <https://d-nb.info/gnd/13140007X> ;
+    acdh:hasDepositor <https://d-nb.info/gnd/13140007X> ;
+    acdh:hasDescription "Rechnungsbücher über Mauteinnahmen wie die bekannten Sundzollregister stellen erstrangige Quellen zur Erforschung des Handels in der Frühen Neuzeit dar. Für die österreichischen Länder nehmen die im Oberösterreichischen Landesarchiv (Linz), Depot Harrach, überlieferten Aschacher Mautprotokolle eine überragende Stellung ein. Seit 2013 werden die erhaltenen Mautprotokolle für den Zeitraum von 1706 bis 1740 bearbeitet. Die Bände wurden vollständig digitalisiert und deren Inhalte systematisch in einer Datenbank erfasst. Diese Daten wurden anschließend in das für die Langzeitarchvierung geeignete XML/TEI Format konvertiert  "@de ;
+    acdh:hasLicense <https://vocabs.acdh.oeaw.ac.at/archelicenses/cc-by-4-0> ;
+    acdh:hasLicensor <https://d-nb.info/gnd/13140007X> ;
+    acdh:hasMetadataCreator <https://d-nb.info/gnd/1043833846> ;
+    acdh:hasCurator <https://d-nb.info/gnd/1043833846> ;
+    acdh:hasOwner <https://d-nb.info/gnd/13140007X> ;
+    acdh:hasPrincipalInvestigator <https://d-nb.info/gnd/13140007X> ;
+    acdh:hasRelatedDiscipline <https://vocabs.acdh.oeaw.ac.at/oefosdisciplines/601> ;
+    acdh:hasRightsHolder <https://d-nb.info/gnd/13140007X> ;
+    acdh:hasSubject "Donauhandel"@de ;
+    acdh:hasTitle "Aschacher Mautprotokolle"@de .
+
+<https://d-nb.info/gnd/103048337X> a acdh:Person ;
+    acdh:hasFirstName "Beate"@de ;
+    acdh:hasLastName "Pamperl"@de ;
+    acdh:hasTitle "Beate Pamperl"@de .
+
+<https://d-nb.info/gnd/1031446176> a acdh:Person ;
+    acdh:hasFirstName "Andrea"@de ;
+    acdh:hasLastName "Serles"@de ;
+    acdh:hasTitle "Andrea Serles"@de .
+
+<https://d-nb.info/gnd/13140007X> a acdh:Person ;
+    acdh:hasFirstName "Peter"@de ;
+    acdh:hasLastName "Rauscher"@de ;
+    acdh:hasTitle "Peter Rauscher"@de .
+
+<https://d-nb.info/gnd/1043833846> a acdh:Person ;
+    acdh:hasFirstName "Peter"@de ;
+    acdh:hasLastName "Andorfer"@de ;
+    acdh:hasTitle "Peter Andorfer"@de .
+
