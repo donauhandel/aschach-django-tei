@@ -37,9 +37,13 @@ class Command(BaseCommand):
             items = Angabe.objects.filter(scan__ordner=x).distinct().order_by('datum')
             better_date = items.filter(datum__gt="1000-01-01").order_by('datum')
             datum = f"{better_date.first().datum}"
+            last_year = f"{better_date.last().datum}"[:4]
             year = datum[:4]
             idno = x.replace("DepHarr_H", "")
-            title_str = f"Aschacher Mautprotokoll {year} (Oberösterreichisches Landesarchiv, Depot Harrach, Handschrift {idno})"
+            if last_year == year:
+                title_str = f"Aschacher Mautprotokoll {year} (Oberösterreichisches Landesarchiv, Depot Harrach, Handschrift {idno})"
+            else:
+                title_str = f"Aschacher Mautprotokoll {year}-{last_year} (Oberösterreichisches Landesarchiv, Depot Harrach, Handschrift {idno})"
             file_name = f"{x}.xml"
             subj = URIRef(f"{BASE_URI}/{file_name}")
             description = f"XML/TEI Serialisierung von {items.count()} Einträgen im Aschacher Mautprotokoll aus dem Jahr {year}."
