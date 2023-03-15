@@ -57,5 +57,5 @@ Untitled.xml
 /vendor
 composer.*
 hansi.ttl
-aschach/arche.ttl
 /to_ingest
+hansi.xml

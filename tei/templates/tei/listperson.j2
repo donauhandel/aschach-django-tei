@@ -1,0 +1,61 @@
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xml:id="{{ file_name }}">
+   <teiHeader>
+      <fileDesc>
+         <titleStmt>
+            <title type="main">{{ title }}</title>
+            <title type="sub">Donauhandel - Aschacher Mautprotokolle</title>
+            <respStmt>
+               <resp>Projektleitung, Datenerhebung</resp>
+               <persName key="https://d-nb.info/gnd/13140007X">
+                  <forename>Peter</forename>
+                  <surname>Rauscher</surname>
+               </persName>
+            </respStmt>
+            <respStmt>
+               <resp>Datenerhebung</resp>
+               <persName key="https://d-nb.info/gnd/1031446176">
+                  <forename>Andrea</forename>
+                  <surname>Serles</surname>
+               </persName>
+            </respStmt>
+            <respStmt>
+               <resp>Datenmodellierung und Aufsetzen einer Datenbankapplikation zur Datenerhebung</resp>
+               <persName key="https://d-nb.info/gnd/103048337X">
+                  <forename>Beate</forename>
+                  <surname>Pamperl</surname>
+               </persName>
+            </respStmt>
+            <respStmt>
+               <resp>Datenmodellierung und Datenkonvertierung nach TEI</resp>
+               <persName key="https://d-nb.info/gnd/1043833846">
+                  <forename>Peter</forename>
+                  <surname>Andorfer</surname>
+               </persName>
+            </respStmt>
+         </titleStmt>
+         <publicationStmt>
+            <authority>
+               <persName key="https://d-nb.info/gnd/13140007X">
+                  <forename>Peter</forename>
+                  <surname>Rauscher</surname>
+               </persName>
+            </authority>
+            <availability>
+               <licence target="https://creativecommons.org/licenses/by-sa/4.0/">CC-BY-SA</licence>
+            </availability>
+         </publicationStmt>
+         <sourceDesc>
+            <ab>born digital</ab>
+         </sourceDesc>
+      </fileDesc>
+   </teiHeader>
+   <text>
+      <body>
+         <div>
+            <listPerson>{% for x in items %}
+               {{ x|safe }}{% endfor %}
+            </listPerson>
+         </div>
+      </body>
+   </text>
+</TEI>

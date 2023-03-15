@@ -1,5 +1,5 @@
 import os
-from aschach.models import Angabe
+from aschach.models import Angabe, Person, Ort
 from django.core.management.base import BaseCommand
 from rdflib import Graph, URIRef, RDF, Literal, XSD
 from django.conf import settings
@@ -23,15 +23,27 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         g = Graph()
         g.parse(SEED_FILE)
-
+        register_item = URIRef("https://id.acdh.oeaw.ac.at/donauhandel-aschach/listplace.xml")
+        g.add(
+            (register_item, ARCHE["hasExtent"], Literal(f"{Ort.objects.all().count()} Ortseinträge", lang="de"))
+        )
+        register_item = URIRef("https://id.acdh.oeaw.ac.at/donauhandel-aschach/listperson.xml")
+        g.add(
+            (register_item, ARCHE["hasExtent"], Literal(f"{Person.objects.all().count()} Personeneinträge", lang="de"))
+        )
         hs = set([x for x in Angabe.objects.values_list('scan__ordner', flat=True).distinct() if x is not None])
         items = Angabe.objects.filter(related_person=None)
         for x in list(hs):
             items = Angabe.objects.filter(scan__ordner=x).distinct().order_by('datum')
-            datum = f"{items.first().datum}"
+            better_date = items.filter(datum__gt="1000-01-01").order_by('datum')
+            datum = f"{better_date.first().datum}"
+            last_year = f"{better_date.last().datum}"[:4]
             year = datum[:4]
             idno = x.replace("DepHarr_H", "")
-            title_str = f"Aschacher Mautprotokoll {year} (Oberösterreichisches Landesarchiv, Depot Harrach, Handschrift {idno})"
+            if last_year == year:
+                title_str = f"Aschacher Mautprotokoll {year} (Oberösterreichisches Landesarchiv, Depot Harrach, Handschrift {idno})"
+            else:
+                title_str = f"Aschacher Mautprotokoll {year}-{last_year} (Oberösterreichisches Landesarchiv, Depot Harrach, Handschrift {idno})"
             file_name = f"{x}.xml"
             subj = URIRef(f"{BASE_URI}/{file_name}")
             description = f"XML/TEI Serialisierung von {items.count()} Einträgen im Aschacher Mautprotokoll aus dem Jahr {year}."

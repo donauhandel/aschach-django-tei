@@ -30,5 +30,11 @@ class TeiPerson:
         else:
             f_name.text = "N."
         name.append(f_name)
+        for x in self.res.normdata_url.all():
+            idno_el = ET.Element("{http://www.tei-c.org/ns/1.0}idno")
+            idno_el.attrib["subtype"] = x.domain.replace(" ", "").strip().lower()
+            idno_el.attrib["type"] = "URL"
+            idno_el.text = x.uri
+            item.append(idno_el)
 
         return item
