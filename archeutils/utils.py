@@ -38,7 +38,7 @@ ARCHE_PROPS_LOOKUP = get_prop_types()
 def serialize_project():
     g = Graph()
     sub = URIRef(f"{ARCHE_BASE_URL}/aschach")
-    g.add((sub, RDF.type, acdh_ns.Collection))
+    g.add((sub, RDF.type, acdh_ns.TopCollection))
     g.add((sub, acdh_ns.hasCoverageStartDate, Literal("1652-01-01", datatype=XSD.date)))
     g.add((sub, acdh_ns.hasCoverageEndDate, Literal("1740-12-31", datatype=XSD.date)))
     g.add(

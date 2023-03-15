@@ -54,3 +54,7 @@ secret.env
 db_dump.sql
 Untitled.xml
 /media/tei_out
+/vendor
+composer.*
+hansi.ttl
+aschach/arche.ttl
