@@ -23,3 +23,7 @@ for x in matches:
     print(f"downloading {f_name} from {f_url}")
     with open(f_path, 'wb') as f:
         f.write(r.content)
+
+r = requests.get(f"{URL}/arche.ttl", allow_redirects=True)
+with open(os.path.join(to_ingest, "arche.ttl"), "wb") as f:
+    f.write(r.content)
