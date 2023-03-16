@@ -27,3 +27,10 @@ for x in matches:
 r = requests.get(f"{URL}/arche.ttl", allow_redirects=True)
 with open(os.path.join(to_ingest, "arche.ttl"), "wb") as f:
     f.write(r.content)
+
+r = requests.get(f"{URL}/listperson.xml", allow_redirects=True)
+with open(os.path.join(to_ingest, "listperson.xml"), "wb") as f:
+    f.write(r.content)
+r = requests.get(f"{URL}/listplae.xml", allow_redirects=True)
+with open(os.path.join(to_ingest, "listplae.xml"), "wb") as f:
+    f.write(r.content)
