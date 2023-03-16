@@ -23,19 +23,39 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         g = Graph()
         g.parse(SEED_FILE)
-        register_item = URIRef("https://id.acdh.oeaw.ac.at/donauhandel-aschach/listplace.xml")
-        g.add(
-            (register_item, ARCHE["hasExtent"], Literal(f"{Ort.objects.all().count()} Ortseinträge", lang="de"))
+        register_item = URIRef(
+            "https://id.acdh.oeaw.ac.at/donauhandel-aschach/listplace.xml"
         )
-        register_item = URIRef("https://id.acdh.oeaw.ac.at/donauhandel-aschach/listperson.xml")
         g.add(
-            (register_item, ARCHE["hasExtent"], Literal(f"{Person.objects.all().count()} Personeneinträge", lang="de"))
+            (
+                register_item,
+                ARCHE["hasExtent"],
+                Literal(f"{Ort.objects.all().count()} Ortseinträge", lang="de"),
+            )
         )
-        hs = set([x for x in Angabe.objects.values_list('scan__ordner', flat=True).distinct() if x is not None])
+        register_item = URIRef(
+            "https://id.acdh.oeaw.ac.at/donauhandel-aschach/listperson.xml"
+        )
+        g.add(
+            (
+                register_item,
+                ARCHE["hasExtent"],
+                Literal(f"{Person.objects.all().count()} Personeneinträge", lang="de"),
+            )
+        )
+        hs = set(
+            [
+                x
+                for x in Angabe.objects.values_list(
+                    "scan__ordner", flat=True
+                ).distinct()
+                if x is not None
+            ]
+        )
         items = Angabe.objects.filter(related_person=None)
         for x in list(hs):
-            items = Angabe.objects.filter(scan__ordner=x).distinct().order_by('datum')
-            better_date = items.filter(datum__gt="1000-01-01").order_by('datum')
+            items = Angabe.objects.filter(scan__ordner=x).distinct().order_by("datum")
+            better_date = items.filter(datum__gt="1000-01-01").order_by("datum")
             datum = f"{better_date.first().datum}"
             last_year = f"{better_date.last().datum}"[:4]
             year = datum[:4]
@@ -47,47 +67,66 @@ class Command(BaseCommand):
             file_name = f"{x}.xml"
             subj = URIRef(f"{BASE_URI}/{file_name}")
             description = f"XML/TEI Serialisierung von {items.count()} Einträgen im Aschacher Mautprotokoll aus dem Jahr {year}."
-            g.add((
-                subj, RDF.type, ARCHE["Resource"]
-            ))
-            g.add((
-                subj, ARCHE["hasTitle"], Literal(title_str, lang="de")
-            ))
-            g.add((
-                subj, ARCHE["hasExtent"], Literal(f"{items.count()} Einträge", lang="de")
-            ))
-            g.add((
-                subj, ARCHE["hasDescription"], Literal(description, lang="de")
-            ))
-            g.add((
-                subj, ARCHE["hasCoverageStartDate"], Literal(f"{items.first().datum}", datatype=XSD.date)
-            ))
-            g.add((
-                subj, ARCHE["hasCoverageEndDate"], Literal(f"{items.last().datum}", datatype=XSD.date)
-            ))
-            g.add((
-                subj, ARCHE["hasRightsHolder"], URIRef("https://d-nb.info/gnd/13140007X")
-            ))
-            g.add((
-                subj, ARCHE["hasOwner"], URIRef("https://d-nb.info/gnd/13140007X")
-            ))
-            g.add((
-                subj, ARCHE["hasLicensor"], URIRef("https://d-nb.info/gnd/13140007X")
-            ))
-            g.add((
-                subj, ARCHE["hasLicense"], URIRef("https://vocabs.acdh.oeaw.ac.at/archelicenses/cc-by-4-0")
-            ))
-            g.add((
-                subj, ARCHE["isPartOf"], URIRef(BASE_URI)
-            ))
-            g.add((
-                subj, ARCHE["hasMetadataCreator"], URIRef("https://d-nb.info/gnd/1043833846")
-            ))
-            g.add((
-                subj, ARCHE["hasDepositor"], URIRef("https://d-nb.info/gnd/13140007X")
-            ))
-            g.add((
-                subj, ARCHE["hasCategory"], URIRef("https://vocabs.acdh.oeaw.ac.at/archecategory/text/tei")
-            ))
+            g.add((subj, RDF.type, ARCHE["Resource"]))
+            g.add((subj, ARCHE["hasTitle"], Literal(title_str, lang="de")))
+            g.add(
+                (
+                    subj,
+                    ARCHE["hasExtent"],
+                    Literal(f"{items.count()} Einträge", lang="de"),
+                )
+            )
+            g.add((subj, ARCHE["hasDescription"], Literal(description, lang="de")))
+            g.add(
+                (
+                    subj,
+                    ARCHE["hasCoverageStartDate"],
+                    Literal(f"{items.first().datum}", datatype=XSD.date),
+                )
+            )
+            g.add(
+                (
+                    subj,
+                    ARCHE["hasCoverageEndDate"],
+                    Literal(f"{items.last().datum}", datatype=XSD.date),
+                )
+            )
+            g.add(
+                (
+                    subj,
+                    ARCHE["hasRightsHolder"],
+                    URIRef("https://d-nb.info/gnd/13140007X"),
+                )
+            )
+            g.add((subj, ARCHE["hasOwner"], URIRef("https://d-nb.info/gnd/13140007X")))
+            g.add(
+                (subj, ARCHE["hasLicensor"], URIRef("https://d-nb.info/gnd/13140007X"))
+            )
+            g.add(
+                (
+                    subj,
+                    ARCHE["hasLicense"],
+                    URIRef("https://vocabs.acdh.oeaw.ac.at/archelicenses/cc-by-4-0"),
+                )
+            )
+            g.add((subj, ARCHE["isPartOf"], URIRef(BASE_URI)))
+            g.add(
+                (
+                    subj,
+                    ARCHE["hasMetadataCreator"],
+                    URIRef("https://d-nb.info/gnd/1043833846"),
+                )
+            )
+            g.add(
+                (subj, ARCHE["hasDepositor"], URIRef("https://d-nb.info/gnd/13140007X"))
+            )
+            g.add(
+                (
+                    subj,
+                    ARCHE["hasCategory"],
+                    URIRef("https://vocabs.acdh.oeaw.ac.at/archecategory/text/tei"),
+                )
+            )
             print(f"gathering data for {title_str}")
         g.serialize(os.path.join(tei_out, "arche.ttl"))
+        os.chmod(os.path.join(tei_out, "arche.ttl"), 0o777)
