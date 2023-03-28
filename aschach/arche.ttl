@@ -2,6 +2,7 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 <https://id.acdh.oeaw.ac.at/donauhandel-aschach> a acdh:TopCollection ;
+    acdh:hasPid "https://hdl.handle.net/21.11115/0000-000F-8289-3" ;
     acdh:hasContact <https://d-nb.info/gnd/13140007X> ;
     acdh:hasCoverageEndDate "1740-12-31"^^xsd:date ;
     acdh:hasCoverageStartDate "1652-01-01"^^xsd:date ;

@@ -5,6 +5,7 @@ from rdflib import Graph, URIRef, RDF, Literal, XSD
 from django.conf import settings
 
 from archeutils.utils import acdh_ns as ARCHE
+from archeutils.pids import PIDS
 
 
 media = settings.MEDIA_ROOT
@@ -128,5 +129,10 @@ class Command(BaseCommand):
                 )
             )
             print(f"gathering data for {title_str}")
+        for s in g.subjects(RDF.type, ARCHE["Resource"]):
+            pid = PIDS[f"{s}"]
+            g.add((
+                s, ARCHE["hasPid"], Literal(pid)
+            ))
         g.serialize(os.path.join(tei_out, "arche.ttl"))
         os.chmod(os.path.join(tei_out, "arche.ttl"), 0o777)
