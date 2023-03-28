@@ -10,7 +10,7 @@
         <https://d-nb.info/gnd/1031446176>,
         <https://d-nb.info/gnd/13140007X> ;
     acdh:hasDepositor <https://d-nb.info/gnd/13140007X> ;
-    acdh:hasDescription "Rechnungsbücher über Mauteinnahmen wie die bekannten Sundzollregister stellen erstrangige Quellen zur Erforschung des Handels in der Frühen Neuzeit dar. Für die österreichischen Länder nehmen die im Oberösterreichischen Landesarchiv (Linz), Depot Harrach, überlieferten Aschacher Mautprotokolle eine überragende Stellung ein. Seit 2013 werden die erhaltenen Mautprotokolle für den Zeitraum von 1706 bis 1740 bearbeitet. Die Bände wurden vollständig digitalisiert und deren Inhalte systematisch in einer Datenbank erfasst. Diese Daten wurden anschließend in das für die Langzeitarchvierung geeignete XML/TEI Format konvertiert  "@de ;
+    acdh:hasDescription "Rechnungsbücher über Mauteinnahmen wie die bekannten Sundzollregister stellen erstrangige Quellen zur Erforschung des Handels in der Frühen Neuzeit dar. Für die österreichischen Länder nehmen die im Oberösterreichischen Landesarchiv (Linz), Depot Harrach, überlieferten Aschacher Mautprotokolle eine überragende Stellung ein. Seit 2013 werden die erhaltenen Mautprotokolle für den Zeitraum von 1706 bis 1740 bearbeitet. Die Bände wurden vollständig digitalisiert und deren Inhalte systematisch in einer Datenbank erfasst. Diese Daten wurden anschließend in das für die Langzeitarchvierung geeignete XML/TEI Format konvertiert und in dieser Collection abgelegt. Ergänzt werden diese Daten durch ebenfalls in XML/TEI kodierte Personen- und Ortsregister."@de ;
     acdh:hasLicense <https://vocabs.acdh.oeaw.ac.at/archelicenses/cc-by-4-0> ;
     acdh:hasLicensor <https://d-nb.info/gnd/13140007X> ;
     acdh:hasMetadataCreator <https://d-nb.info/gnd/1043833846> ;
@@ -57,11 +57,11 @@
 <https://id.acdh.oeaw.ac.at/donauhandel-aschach/listplace.xml> a acdh:Resource ;
     acdh:hasCategory <https://vocabs.acdh.oeaw.ac.at/archecategory/text/tei> ;
     acdh:hasDepositor <https://d-nb.info/gnd/13140007X> ;
-    acdh:hasDescription "XML/TEI Serialisierung der in den Quellen erwähnten Orten."@de ;
+    acdh:hasDescription "XML/TEI Serialisierung der in den Quellen erwähnten Orte."@de ;
     acdh:hasLicense <https://vocabs.acdh.oeaw.ac.at/archelicenses/cc-by-4-0> ;
     acdh:hasLicensor <https://d-nb.info/gnd/13140007X> ;
     acdh:hasMetadataCreator <https://d-nb.info/gnd/1043833846> ;
     acdh:hasOwner <https://d-nb.info/gnd/13140007X> ;
     acdh:hasRightsHolder <https://d-nb.info/gnd/13140007X> ;
-    acdh:hasTitle "Register der in den Quellen erwähnten Orten"@de ;
+    acdh:hasTitle "Register der in den Quellen erwähnten Orte"@de ;
     acdh:isPartOf <https://id.acdh.oeaw.ac.at/donauhandel-aschach> .
