@@ -60,11 +60,10 @@ class Command(BaseCommand):
             datum = f"{better_date.first().datum}"
             last_year = f"{better_date.last().datum}"[:4]
             year = datum[:4]
-            idno = x.replace("DepHarr_H", "")
             if last_year == year:
-                title_str = f"Aschacher Mautprotokoll {year} (Oberösterreichisches Landesarchiv, Depot Harrach, Handschrift {idno})"
+                title_str = f"Einträge Aschacher Mautprotokoll von {year}"
             else:
-                title_str = f"Aschacher Mautprotokoll {year}-{last_year} (Oberösterreichisches Landesarchiv, Depot Harrach, Handschrift {idno})"
+                title_str = f"Einträge Aschacher Mautprotokoll von {year} bis {last_year}"
             file_name = f"{x}.xml"
             subj = URIRef(f"{BASE_URI}/{file_name}")
             description = f"XML/TEI Serialisierung von {items.count()} Einträgen im Aschacher Mautprotokoll aus dem Jahr {year}."
