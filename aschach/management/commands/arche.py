@@ -60,13 +60,14 @@ class Command(BaseCommand):
             datum = f"{better_date.first().datum}"
             last_year = f"{better_date.last().datum}"[:4]
             year = datum[:4]
-            if last_year == year:
-                title_str = f"Einträge Aschacher Mautprotokoll von {year}"
-            else:
-                title_str = f"Einträge Aschacher Mautprotokoll von {year} bis {last_year}"
             file_name = f"{x}.xml"
             subj = URIRef(f"{BASE_URI}/{file_name}")
-            description = f"XML/TEI Serialisierung von {items.count()} Einträgen im Aschacher Mautprotokoll aus dem Jahr {year}."
+            if last_year == year:
+                title_str = f"Einträge Aschacher Mautprotokolle von {year}"
+                description = f"XML/TEI Serialisierung von {items.count()} Einträgen in den Aschacher Mautprotokollen aus dem Jahr {year}."
+            else:
+                title_str = f"Einträge Aschacher Mautprotokolle von {year} bis {last_year}"
+                description = f"XML/TEI Serialisierung von {items.count()} Einträgen in den Aschacher Mautprotokollen aus den Jahren {year} bis {last_year}."
             g.add((subj, RDF.type, ARCHE["Resource"]))
             g.add((subj, ARCHE["hasTitle"], Literal(title_str, lang="de")))
             g.add(
