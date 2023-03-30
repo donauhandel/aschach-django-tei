@@ -35,6 +35,7 @@ class AngabeFilterFormHelper(FormHelper):
             Fieldset(
                 "",
                 "id",
+                "legacy_id",
                 "related_good",
                 "related_person",
                 "related_place",
