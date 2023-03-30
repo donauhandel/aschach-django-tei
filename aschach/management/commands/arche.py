@@ -60,6 +60,7 @@ class Command(BaseCommand):
             datum = f"{better_date.first().datum}"
             last_year = f"{better_date.last().datum}"[:4]
             year = datum[:4]
+            print(x, datum, last_year)
             file_name = f"{x}.xml"
             subj = URIRef(f"{BASE_URI}/{file_name}")
             if last_year == year:
@@ -82,14 +83,14 @@ class Command(BaseCommand):
                 (
                     subj,
                     ARCHE["hasCoverageStartDate"],
-                    Literal(f"{items.first().datum}", datatype=XSD.date),
+                    Literal(f"{better_date.first().datum}", datatype=XSD.date),
                 )
             )
             g.add(
                 (
                     subj,
                     ARCHE["hasCoverageEndDate"],
-                    Literal(f"{items.last().datum}", datatype=XSD.date),
+                    Literal(f"{better_date.last().datum}", datatype=XSD.date),
                 )
             )
             g.add(
@@ -128,7 +129,7 @@ class Command(BaseCommand):
                     URIRef("https://vocabs.acdh.oeaw.ac.at/archecategory/text/tei"),
                 )
             )
-            print(f"gathering data for {title_str}")
+            # print(f"gathering data for {title_str}")
         for s in g.subjects(RDF.type, ARCHE["Resource"]):
             pid = PIDS[f"{s}"]
             g.add((
