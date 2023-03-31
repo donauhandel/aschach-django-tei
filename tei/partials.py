@@ -50,7 +50,7 @@ TEI_STUMP = """
                </persName>
             </authority>
             <availability>
-               <licence target="https://creativecommons.org/licenses/by-sa/4.0/">CC-BY-SA</licence>
+               <licence target="https://creativecommons.org/licenses/by/4.0/">CC-BY</licence>
             </availability>
          </publicationStmt>
          <sourceDesc>
