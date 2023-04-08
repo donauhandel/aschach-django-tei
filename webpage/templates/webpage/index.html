@@ -4,7 +4,7 @@
 {% load webpage_extras %}
 {% block content %}
 
-<div class="container" style="color:black">
+<div class="container">
   <h1 style="text-align:center">{% projects_metadata 'title' %}</h1>
   <h2 style="text-align:center">
     {% projects_metadata 'subtitle' %}
@@ -14,13 +14,13 @@
       <div class="carousel-item active">
         <img class="d-block w-100" src="{% static 'webpage/img/aschach.jpg' %}" alt="First slide" width="100%" />
         <div class="carousel-caption d-none d-md-block">
-          <h5 style="color: white; background-color: #00000094;">Der Berümbte Marckt Aschach: Handkolorierter Stich nach Matthäus MERIAN–Martin ZEILLER, Topographia Provinciarum Austriacarum (Frankfurt am Main 1679).
+          <h5 style="color: white; background-color: #00000094;"><q>Der Berümbte Marckt Aschach</q><br/> Handkolorierter Stich nach Matthäus MERIAN–Martin ZEILLER, Topographia Provinciarum Austriacarum (Frankfurt am Main 1679).
           </h5>
         </div>
       </div>
     </div>
   </div>
-  <div class="container" style="color:black">
+  <div class="container">
 
     <p style="text-align:justify">{% projects_metadata 'description' %}</p>
     <h1 style="text-align:center">
