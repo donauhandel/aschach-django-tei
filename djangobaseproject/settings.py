@@ -212,3 +212,5 @@ LEAFLET_CONFIG = {
         )
     ],
 }
+
+DATA_REPO_URL = "https://raw.githubusercontent.com/donauhandel/aschach-data/main/orig_data/csvs/"
