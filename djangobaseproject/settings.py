@@ -34,7 +34,7 @@ INSTALLED_APPS = [
     'reversion',
     'django_extensions',
     "crispy_forms",
-    "crispy_bootstrap4",
+    "crispy_bootstrap5",
     'django_filters',
     'django_tables2',
     'rest_framework',
@@ -52,8 +52,8 @@ INSTALLED_APPS = [
     'archeutils'
 ]
 
-CRISPY_TEMPLATE_PACK = "bootstrap4"
-CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 SPAGHETTI_SAUCE = {
     "apps": [
