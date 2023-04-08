@@ -1,0 +1,81 @@
+{% load static %}
+{% load webpage_extras %}
+{% load browsing_extras %}
+{% load infos_extras %}
+
+<div class="wrapper-fluid wrapper-navbar sticky-navbar" id="wrapper-navbar" itemscope=""
+    itemtype="http://schema.org/WebSite">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <!-- Your site title as branding in the menu -->
+            <a href="/" class="navbar-brand" rel="home" itemprop="url">
+                <img src="{% static 'webpage/img/boot.jpg' %}"
+                    class="img-fluid" alt="{% projects_metadata 'title' %}"
+                    itemprop="{% projects_metadata 'title' %}" />
+            </a><!-- end custom logo -->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon" />
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <!-- Your menu goes here -->
+                <ul id="main-menu" class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="infoDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Info
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="infoDropdown">
+                            <li><a class="dropdown-item" href="{% url 'infos:about-the-project' %}">Über das Projekt</a>
+                            </li>
+                            <li><a class="dropdown-item"
+                                    href="{% url 'webpage:staticpage' template='data-model' %}">Datenmodell</a></li>
+                            <li><a class="dropdown-item" href="https://github.com/donauhandel/aschach-django-tei">Code
+                                    Repo</a></li>
+                            <li><a class="dropdown-item"
+                                    href="{% url 'webpage:staticpage' template='imprint' %}">Imprint | Impressum</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="dataDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Daten
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="dataDropdown">
+                            <li><a class="dropdown-item" href="{% url 'aschach:angabe_browse' %}">Protokolleinträge</a>
+                            </li>
+                            <li><a class="dropdown-item" href="{% url 'aschach:person_browse' %}">Personen</a></li>
+                        </ul>
+                    </li>                    
+                </ul>
+                <div class="ms-auto">
+                    <ul class="navbar-nav">
+                        {% if user.is_authenticated %}
+                        <li class="nav-item dropdown">
+                            <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
+                                aria-haspopup="true" aria-expanded="false">
+                                {{ user.get_username }}
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="nav-link" href="{% url 'webpage:user_logout' %}">log out <i class="feather-32"
+                                        data-feather="log-out"></i></a>
+                            </div>
+                        </li>
+                        {% else %}
+                        <li class="nav-item dropdown my-2 my-lg-0">
+                            <a class="nav-link" href="{% url 'webpage:user_login' %}">
+                                <i class="feather-32" data-feather="log-in"></i>
+                            </a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+                
+            </div>
+            <!-- .collapse navbar-collapse -->
+        </div>
+        <!-- .container -->
+    </nav>
+    <!-- .site-navigation -->
+</div>
