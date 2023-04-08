@@ -16,7 +16,7 @@ from .models import (
     Region,
     Scan,
     Ware,
-    WareLadung
+    WareLadung,
 )
 
 
@@ -79,7 +79,11 @@ class PersonAC(autocomplete.Select2QuerySetView):
         qs = Person.objects.all()
 
         if self.q:
-            qs = qs.filter(Q(legacy_id__icontains=self.q) | Q(id__icontains=self.q))
+            qs = qs.filter(
+                Q(legacy_id__icontains=self.q)
+                | Q(id__icontains=self.q)  # noqa: W503
+                | Q(has_title__icontains=self.q)  # noqa: W503
+            )
         return qs
 
 
