@@ -36,3 +36,4 @@ server.py
 default.env
 secret.env
 db_dump.sql
+/staticfiles

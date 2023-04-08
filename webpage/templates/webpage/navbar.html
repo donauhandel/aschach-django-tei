@@ -9,7 +9,7 @@
         <div class="container-fluid">
             <!-- Your site title as branding in the menu -->
             <a href="/" class="navbar-brand custom-logo-link" rel="home" itemprop="url">
-                <img src="https://www.univie.ac.at/donauhandel/wp-content/themes/twentytwelve/img/boot.jpg"
+                <img src="{% static 'webpage/img/boot.jpg' %}"
                     class="img-fluid" alt="{% projects_metadata 'title' %}"
                     itemprop="{% projects_metadata 'title' %}" />
             </a><!-- end custom logo -->
@@ -48,22 +48,21 @@
                             <li><a class="dropdown-item" href="{% url 'aschach:person_browse' %}">Personen</a></li>
                         </ul>
                     </li>
-                    {% if user.is_authenticated %}
+                    
                     <li class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
-                            aria-haspopup="true" aria-expanded="false">Kontrolliertes Vokabular
-                            <span class="caret" />
+                        <a class="nav-link dropdown-toggle" href="#" id="dataDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Daten
                         </a>
-                        <div class="dropdown-menu">
-                            {% nav_menu app='vocabs' as links %}
-                            {% for x in links %}
-                            <a class="dropdown-item" href="{{ x.link }}">{{ x.name }}</a>
-                            {% endfor %}
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="{% url 'api-root' %}">Export SKOS (API)</a>
-                        </div>
+                        <ul class="dropdown-menu" aria-labelledby="dataDropdown">
+                            <li><a class="dropdown-item" href="{% url 'aschach:angabe_browse' %}">Protokolleinträge</a>
+                            </li>
+                            {% if user.is_authenticated %}
+                            <li><a class="dropdown-item" href="{% url 'aschach:person_browse' %}">Personen</a></li>
+                            {% endif %}
+                        </ul>
                     </li>
-                    {% endif %}
+                    
                 </ul>
                 <ul class="navbar-nav justify-content-end">
                     {% if user.is_authenticated %}
