@@ -3,118 +3,109 @@
 {% load webpage_extras %}
 {% load browsing_extras %}
 {% load infos_extras %}
-<html lang="en">
+<html lang="en" class="h-100"">
 
 <head>
-  <meta charset="utf-8">
-  <title>{% block title %} {% projects_metadata 'title' %}{% endblock %}</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  {% block metaDescription %}
-  <meta name="description" content="{{ metadata.description }}">
-  <meta name="author" content="{{ metadata.author }}">
-  {% endblock %}
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"
-    integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-  <link rel="stylesheet" href="{% static 'webpage/css/style.css' %}" rel="stylesheet" />
-  <!-- Begin Cookie Consent plugin by Silktide - http://silktide.com/cookieconsent -->
-  <script type="text/javascript">
-    window.cookieconsent_options = {
-      "message": "This website uses cookies to ensure you get the best experience on our website",
-      "dismiss": "Got it!",
-      "learnMore": "More info",
-      "link": "{% projects_metadata 'imprint' %}",
-      "theme": "dark-bottom"
-    };
-  </script>
-  <script type="text/javascript"
-    src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.9/cookieconsent.min.js"></script>
-  <!-- End Cookie Consent plugin -->
-  <!-- Matomo -->
-  <script type="text/javascript">
-    var _paq = _paq || [];
-    /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
-    _paq.push(['trackPageView']);
-    _paq.push(['enableLinkTracking']);
-    (function () {
-      var u = "{% projects_metadata 'matomo_url' %}";
-      _paq.push(['setTrackerUrl', u + 'piwik.php']);
-      _paq.push(['setSiteId', '{% projects_metadata "matomo_id" %}']);
-      var d = document,
-        g = d.createElement('script'),
-        s = d.getElementsByTagName('script')[0];
-      g.type = 'text/javascript';
-      g.async = true;
-      g.defer = true;
-      g.src = u + 'piwik.js';
-      s.parentNode.insertBefore(g, s);
-    })();
-  </script>
-  <!-- End Matomo Code -->
-  {% block scriptHeader %}
-  {% endblock %}
+  <meta charset=" utf-8">
+<title>{% block title %} {% projects_metadata 'title' %}{% endblock %}</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+{% block metaDescription %}
+<meta name="description" content="{{ metadata.description }}">
+<meta name="author" content="{{ metadata.author }}">
+{% endblock %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"
+  integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ=="
+  crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+  integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<link rel="stylesheet" href="{% static 'webpage/css/style.css' %}" rel="stylesheet" />
+<!-- Begin Cookie Consent plugin by Silktide - http://silktide.com/cookieconsent -->
+<script type="text/javascript">
+  window.cookieconsent_options = {
+    "message": "This website uses cookies to ensure you get the best experience on our website",
+    "dismiss": "Got it!",
+    "learnMore": "More info",
+    "link": "{% projects_metadata 'imprint' %}",
+    "theme": "dark-bottom"
+  };
+</script>
+<script type="text/javascript"
+  src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.9/cookieconsent.min.js"></script>
+<!-- End Cookie Consent plugin -->
+<!-- Matomo -->
+<script type="text/javascript">
+  var _paq = _paq || [];
+  /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function () {
+    var u = "{% projects_metadata 'matomo_url' %}";
+    _paq.push(['setTrackerUrl', u + 'piwik.php']);
+    _paq.push(['setSiteId', '{% projects_metadata "matomo_id" %}']);
+    var d = document,
+      g = d.createElement('script'),
+      s = d.getElementsByTagName('script')[0];
+    g.type = 'text/javascript';
+    g.async = true;
+    g.defer = true;
+    g.src = u + 'piwik.js';
+    s.parentNode.insertBefore(g, s);
+  })();
+</script>
+<!-- End Matomo Code -->
+{% block scriptHeader %}
+{% endblock %}
 </head>
 
-<body role="document" class="home contained fixed-nav" id="body">
-  <div class="hfeed site" id="page">
-    {% include 'webpage/navbar.html' %}
-    <div id="content">
-      {% block content %}{% endblock %}
-    </div>
-    <div>
-      <div class="p-3 ">
-        <div class="row">
-          <div class="col">
-            <a href="https://www.oeaw.ac.at/acdh/" target="_blank" rel="noopener" aria-label="Univerisität Wien, Institut für Österreichische Geschichtsforschung">
-              <img src="{% static 'webpage/img/logo1.png' %}" alt="Uni Wien" title="Univerisität Wien, Institut für Österreichische Geschichtsforschung"
-                class="img-fluid mx-auto d-block" width="300px" />
-            </a>
-          </div>
-          <div class="col">
-            <a href="https://www.fwf.ac.at" target="_blank" rel="noopener" aria-label="FWF">
-              <img src="{% static 'webpage/img/fwf_logo.svg' %}" alt="FWF" class="img-fluid mx-auto d-block"
-                title="Österreichischer Wissenschaftsfonds"
-                width="300px" />
-            </a>
-          </div>
-          <div class="col">
-            <a href="https://www.oeaw.ac.at/acdh/" target="_blank" rel="noopener" aria-label="ACDH-CH">
-              <img src="{% static 'webpage/img/acdh-ch-logo-with-text-grayscale.svg' %}" alt="ACDH-CH" class="img-fluid mx-auto d-block"
-                title="Austrian Centre for Digital Humanities and Cultural Heritage (ACDH-CH) of the Austrian Academy of Sciences"
-                width="300px" />
-            </a>
-          </div>
-          
-          
+<body class="d-flex flex-column h-100">
+  {% include 'webpage/navbar.html' %}
 
+  {% block content %}{% endblock %}
+
+  <footer class="footer mt-auto py-3">
+    <div>
+      <div class="row">
+        <div class="col">
+          <a href="https://geschichtsforschung.univie.ac.at/" target="_blank" rel="noopener"
+            aria-label="Univerisität Wien, Institut für Österreichische Geschichtsforschung">
+            <img src="{% static 'webpage/img/logo1.png' %}" alt="Uni Wien"
+              title="Univerisität Wien, Institut für Österreichische Geschichtsforschung"
+              class="img-fluid mx-auto d-block" width="300px" />
+          </a>
+        </div>
+        <div class="col">
+          <a href="https://www.fwf.ac.at" target="_blank" rel="noopener" aria-label="FWF">
+            <img src="{% static 'webpage/img/fwf_logo.svg' %}" alt="FWF" class="img-fluid mx-auto d-block"
+              title="Österreichischer Wissenschaftsfonds" width="300px" />
+          </a>
+        </div>
+        <div class="col">
+          <a href="https://www.oeaw.ac.at/acdh/" target="_blank" rel="noopener" aria-label="ACDH-CH">
+            <img src="{% static 'webpage/img/acdh-ch-logo-with-text-grayscale.svg' %}" alt="ACDH-CH"
+              class="img-fluid mx-auto d-block"
+              title="Austrian Centre for Digital Humanities and Cultural Heritage (ACDH-CH) of the Austrian Academy of Sciences"
+              width="300px" />
+          </a>
         </div>
       </div>
-    </div>
-    <div class="footer-imprint-bar" id="wrapper-footer-secondary"
-      style="text-align:center; padding:0.4rem 0; font-size: 0.9rem;">
-      <a href="imprint">Impressum/Imprint</a>
-      {% if user.is_authenticated %}
-      {% if DB_NAME %}
-      <div class="footer-imprint-bar">
-        <small>{{ DB_NAME }}</small>
+      <div class="d-flex justify-content-center">
+        <a href="{% url 'webpage:staticpage' template='imprint' %}"">Impressum/Imprint</a>
       </div>
-      {% endif %}
-      {% endif %}
     </div>
-    {% block scripts %}
+  </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-      crossorigin="anonymous"></script>
-    {% endblock %}
-    {% block scripts2 %}
-    {% endblock scripts2 %}
-    <script>
-      feather.replace()
-    </script>
+  {% block scripts %}
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+  {% endblock %}
+  {% block scripts2 %}
+  {% endblock scripts2 %}
+  <script>
+    feather.replace()
+  </script>
 </body>
 
 </html>
