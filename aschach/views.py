@@ -384,10 +384,10 @@ class PersonListView(GenericListView):
     table_class = PersonTable
     init_columns = [
         "id",
-        "nachname",
-        "vorname",
+        "has_title",
     ]
     enable_merge = True
+    template_name = "aschach/custom_list.html"
 
 
 class PersonDetailView(BaseDetailView):
