@@ -131,7 +131,11 @@ class Command(BaseCommand):
             )
             # print(f"gathering data for {title_str}")
         for s in g.subjects(RDF.type, ARCHE["Resource"]):
-            pid = PIDS[f"{s}"]
+            try:
+                pid = PIDS[f"{s}"]
+            except KeyError:
+                print(f"no PID registered yet for {s}")
+                continue
             g.add((
                 s, ARCHE["hasPid"], Literal(pid)
             ))
