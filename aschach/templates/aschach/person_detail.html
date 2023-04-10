@@ -163,7 +163,7 @@
                 </div>
             </div>
             {% if user.is_authenticated %}
-                <div class="card-footer" style="text-align: right;">
+                <div class="card-footer d-flex justify-content-end ">
                     <a href="{{ object.get_delete_url }}" title="delete">
                         <i data-feather="delete"></i>
                     </a>
@@ -172,4 +172,4 @@
         </div>
     </div>
 {% endblock custom %}
-{% endblock %}
+{% endblock content %}
