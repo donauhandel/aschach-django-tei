@@ -16,7 +16,7 @@ RUN pip install -U pip \
     && pip install gunicorn --no-cache-dir
 COPY . /opt/app
 WORKDIR /opt/app
-RUN mkdir -p /opt/app/media && /opt/app/to_ingest
+RUN mkdir -p /opt/app/media && mkdir /opt/app/to_ingest
 RUN python fetch_data.py
 RUN mv /opt/app/to_ingest /opt/app/media/tei_out && ls /opt/app/media/tei_out
 # start server
