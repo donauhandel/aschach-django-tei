@@ -1,0 +1,20 @@
+{% extends "webpage/base.html" %}
+{% load static %}
+{% load webpage_extras %}
+{% block title %} Angaben im Lauf der Zeit {% endblock %}
+{% block content %}
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h1> Angaben im Lauf der Zeit  </h1>
+        </div>
+        <div class="card-body">
+            <div>
+                <p>
+                    {% projects_metadata 'description' %}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
