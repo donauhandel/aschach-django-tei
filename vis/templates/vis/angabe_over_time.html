@@ -1,7 +1,7 @@
 {% extends "webpage/base.html" %}
 {% load static %}
 {% load webpage_extras %}
-{% block title %} Angaben im Lauf der Zeit {% endblock %}
+{% block title %} {{ title }} {% endblock %}
 {% block scriptHeader %}
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/modules/data.js"></script>
@@ -13,7 +13,7 @@
 <div class="container">
     <div class="card">
         <div class="card-header">
-            <h1> Angaben im Lauf der Zeit  </h1>
+            <h1>{{ title }}</h1>
         </div>
         <div class="card-body">
             <div id="hcContainer"/>
@@ -24,7 +24,7 @@
 {% block scripts2 %}
 <script>
 Highcharts.getJSON(
-    "{% url 'vis:angabe_by_date' by='year' %}",
+    "{{ data_url }}",
     function (data) {
 
         Highcharts.chart('hcContainer', {
@@ -32,17 +32,11 @@ Highcharts.getJSON(
                 zoomType: 'x'
             },
             title: {
-                text: 'Mautprotokolleinträge pro Jahr',
-                align: 'center'
-            },
-            subtitle: {
-                text: document.ontouchstart === undefined ?
-                    'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in',
-                align: 'left'
+                text: "",
             },
             xAxis: {
                 title: {
-                    text: "XXX"
+                    text: "{{ unit }}"
                 },
                 type: 'date'
             },
@@ -83,7 +77,7 @@ Highcharts.getJSON(
 
             series: [{
                 type: 'area',
-                name: 'Anzahl der Einträge pro XXX',
+                name: 'Anzahl der Einträge pro {{ unit }}',
                 data: data
             }]
         });
