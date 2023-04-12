@@ -2,6 +2,13 @@
 {% load static %}
 {% load webpage_extras %}
 {% block title %} Angaben im Lauf der Zeit {% endblock %}
+{% block scriptHeader %}
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/data.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+{% endblock scriptHeader %}
 {% block content %}
 <div class="container">
     <div class="card">
@@ -9,12 +16,78 @@
             <h1> Angaben im Lauf der Zeit  </h1>
         </div>
         <div class="card-body">
-            <div>
-                <p>
-                    {% projects_metadata 'description' %}
-                </p>
-            </div>
+            <div id="hcContainer"/>
         </div>
     </div>
 </div>
-{% endblock %}
+{% endblock content %}
+{% block scripts2 %}
+<script>
+Highcharts.getJSON(
+    "{% url 'vis:angabe_by_date' by='year' %}",
+    function (data) {
+
+        Highcharts.chart('hcContainer', {
+            chart: {
+                zoomType: 'x'
+            },
+            title: {
+                text: 'Mautprotokolleinträge pro Jahr',
+                align: 'center'
+            },
+            subtitle: {
+                text: document.ontouchstart === undefined ?
+                    'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in',
+                align: 'left'
+            },
+            xAxis: {
+                title: {
+                    text: "XXX"
+                },
+                type: 'date'
+            },
+            yAxis: {
+                title: {
+                    text: 'Einträge'
+                }
+            },
+            legend: {
+                enabled: false
+            },
+            plotOptions: {
+                area: {
+                    fillColor: {
+                        linearGradient: {
+                            x1: 0,
+                            y1: 0,
+                            x2: 0,
+                            y2: 1
+                        },
+                        stops: [
+                            [0, Highcharts.getOptions().colors[0]],
+                            [1, Highcharts.color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                        ]
+                    },
+                    marker: {
+                        radius: 2
+                    },
+                    lineWidth: 1,
+                    states: {
+                        hover: {
+                            lineWidth: 1
+                        }
+                    },
+                    threshold: null
+                }
+            },
+
+            series: [{
+                type: 'area',
+                name: 'Anzahl der Einträge pro XXX',
+                data: data
+            }]
+        });
+    }
+);
+</script>
+{% endblock scripts2 %}

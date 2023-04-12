@@ -9,6 +9,10 @@ def angabe_by_date_view(request, by="year"):
     return JsonResponse(data, safe=False)
 
 
+class VisOverviewView(TemplateView):
+    template_name = "vis/overview.html"
+
+
 class AngabeOverTimeView(TemplateView):
     template_name = "vis/angabe_over_time.html"
 
