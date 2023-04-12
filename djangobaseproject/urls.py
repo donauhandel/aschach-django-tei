@@ -17,7 +17,6 @@ urlpatterns = [
     path("api/", include(router.urls)),
     path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
     path("admin/", admin.site.urls),
-    # url(r'^archeutils/', include('archeutils.urls', namespace='archeutils')),
     path("browsing/", include("browsing.urls", namespace="browsing")),
     path("aschach/", include("aschach.urls", namespace="aschach")),
     path("aschach-ac/", include("aschach.dal_urls", namespace="aschach-ac")),
@@ -25,6 +24,7 @@ urlpatterns = [
     path("vocabs/", include("vocabs.urls", namespace="vocabs")),
     path("netvis/", include("netvis.urls", namespace="netvis")),
     path("vocabs-ac/", include("vocabs.dal_urls", namespace="vocabs-ac")),
+    path("vis/", include("vis.urls", namespace="vis")),
     path("", include("webpage.urls", namespace="webpage")),
 ]
 
