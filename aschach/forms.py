@@ -467,14 +467,10 @@ class RegionFilterFormHelper(FormHelper):
         self.helper = FormHelper()
         self.form_class = "genericFilterForm"
         self.form_method = "GET"
-        self.helper.form_tag = False
+        self.form_tag = False
         self.add_input(Submit("Filter", "Search"))
         self.layout = Layout(
-            Fieldset("Basic search options", "id", css_id="basic_search_fields"),
-            Accordion(
-                AccordionGroup("Advanced search", "legacy_pk", "name", css_id="more"),
-                AccordionGroup("admin", "legacy_id", css_id="admin_search"),
-            ),
+            Fieldset("", "legacy_pk", "name", css_id="basic_search_fields"),
         )
 
 
