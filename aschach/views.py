@@ -342,11 +342,12 @@ class OrtListView(GenericListView):
         "name",
     ]
     enable_merge = True
+    template_name = "aschach/custom_list.html"
 
 
 class OrtDetailView(BaseDetailView):
     model = Ort
-    template_name = "browsing/generic_detail.html"
+    template_name = "aschach/ort_detail.html"
 
 
 class OrtCreate(BaseCreateView):
