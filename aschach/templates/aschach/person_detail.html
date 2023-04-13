@@ -4,172 +4,170 @@
 {% load netvis_extras %}
 {% load webpage_extras %}
 {% block title %}
-    {{ object }}
+{{ object }}
 {% endblock title %}
 {% block scriptHeader %}
-    {% leaflet_js %}
-    {% leaflet_css %}
-    <link rel="stylesheet" href="{% static 'netvis/css/netvis.css' %}" />
-    <!-- optional -->
-    {% load_netvis_js %}
+{% leaflet_js %}
+{% leaflet_css %}
+<link rel="stylesheet" href="{% static 'netvis/css/netvis.css' %}" />
+<link href="https://cdn.datatables.net/v/bs5/dt-1.13.4/datatables.min.css" rel="stylesheet"/>
+<script src="https://cdn.datatables.net/v/bs5/dt-1.13.4/datatables.min.js"></script>
+<!-- optional -->
+{% load_netvis_js %}
 {% endblock scriptHeader %}
 {% block content %}
-    <!-- <div class="container"> -->
-    <div class="card w-100">
-        <div class="card-header">
-            <div class="row">
-                <div class="col-md-2">
-                    {% if object.get_prev %}
-                        <h2>
-                            <a href="{{ object.get_prev }}"
-                               title="previous"
-                               class="d-flex justify-content-start">
-                                <i data-feather="chevron-left"></i>
-                            </a>
-                        </h2>
-                    {% endif %}
-                </div>
-                <div class="col-md-8">
-                    <h2 class="d-flex justify-content-center">
-                        <small class="pe-2"><a href="{{ object.get_listview_url }}" title="back to listview"><i data-feather="list"></i></small></a>
+<!-- <div class="container"> -->
+<div class="card w-100">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-md-2">
+                {% if object.get_prev %}
+                <h2>
+                    <a href="{{ object.get_prev }}" title="previous" class="d-flex justify-content-start">
+                        <i data-feather="chevron-left"></i>
+                    </a>
+                </h2>
+                {% endif %}
+            </div>
+            <div class="col-md-8">
+                <h2 class="d-flex justify-content-center">
+                    <small class="pe-2"><a href="{{ object.get_listview_url }}" title="back to listview"><i
+                                data-feather="list"></i></small></a>
                     {{ object }}
                     {% if user.is_authenticated %}
-                        <a href="{{ object.get_edit_url }}" title="edit">
-                            <i data-feather="edit"></i>
-                        </a>
+                    <a href="{{ object.get_edit_url }}" title="edit">
+                        <i data-feather="edit"></i>
+                    </a>
                     {% endif %}
                 </h2>
             </div>
             <div class="col-md-2">
                 <h2>
                     {% if object.get_next %}
-                        <a href="{{ object.get_next }}"
-                           class="d-flex justify-content-end"
-                           title="next">
-                            <i data-feather="chevron-right"></i>
-                        </a>
-                    </h2>
+                    <a href="{{ object.get_next }}" class="d-flex justify-content-end" title="next">
+                        <i data-feather="chevron-right"></i>
+                    </a>
+                </h2>
                 {% endif %}
             </div>
         </div>
     </div>
     <div class="card-body">
         {% block custom %}
-            <legend>
-                Basic Information
-            </legend>
-            <div class="row">
-                <div class="col-md-6">
-                    <table class="table table-responsive table-hover">
-                        {% for x in object.field_dict %}
-                            {% if x.value and x.value != "None" %}
-                                {% if user.is_authenticated %}
-                                    <tr>
-                                        <th>
-                                            {% if x.help_text %}
-                                                <abbr title="{{ x.help_text }}">{{ x.verbose_name }}</abbr>
-                                            {% else %}
-                                                {{ x.verbose_name }}
-                                            {% endif %}
-                                        </th>
-                                        <td>
-                                            {% if x.f_type == 'M2M' %}
-                                                {% for y in x.value %}
-                                                    <li>
-                                                        <a href="{{ y.get_absolute_url }}">{{ y }}</a>
-                                                    </li>
-                                                {% endfor %}
-                                            {% elif x.f_type == 'FK' %}
-                                                <a href="{{ x.value.get_absolute_url }}">{{ x.value }}</a>
-                                            {% elif x.f_type == 'FK' %}
-                                                <a href="{{ x.value.get_absolute_url }}">{{ x.value }}</a>
-                                            {% elif x.f_type == 'REVRESE_RELATION' %}
-                                                {% for y in x.value %}
-                                                    <li>
-                                                        <a href="{{ y.get_absolute_url }}">{{ y }}</a>
-                                                    </li>
-                                                {% endfor %}
-                                            {% elif x.f_type == 'SIMPLE' %}
-                                                {{ x.value }}
-                                            {% endif %}
-                                        </td>
-                                    </tr>
-                                {% elif not x.extra_fields or x.extra_fields.is_public %}
-                                    {% if x.verbose_name != "The original data" and x.verbose_name != "ID" and x.verbose_name != "Matches FileChecker Entry" %}
-                                        <tr>
-                                            <th>
-                                                {% if x.help_text %}
-                                                    <abbr title="{{ x.help_text }}">{{ x.verbose_name }}</abbr>
-                                                {% else %}
-                                                    {{ x.verbose_name }}
-                                                {% endif %}
-                                            </th>
-                                            <td>
-                                                {% if x.f_type == 'M2M' %}
-                                                    {% for y in x.value %}
-                                                        <li>
-                                                            <a href="{{ y.get_absolute_url }}">{{ y }}</a>
-                                                        </li>
-                                                    {% endfor %}
-                                                {% elif x.f_type == 'FK' %}
-                                                    <a href="{{ x.value.get_absolute_url }}">
-                                                        {% if x.verbose_name == "Copyright" %}
-                                                            {{ x.value|upper }}
-                                                        {% else %}
-                                                            {{ x.value }}
-                                                        {% endif %}
-                                                    </a>
-                                                {% elif x.f_type == 'FK' %}
-                                                    <a href="{{ x.value.get_absolute_url }}"></a>
-                                                {% elif x.f_type == 'REVRESE_RELATION' %}
-                                                    {% for y in x.value %}
-                                                        <li>
-                                                            <a href="{{ y.get_absolute_url }}">{{ y|upper }}</a>
-                                                        </li>
-                                                    {% endfor %}
-                                                {% elif x.f_type == 'SIMPLE' %}
-                                                    {{ x.value|safe }}
-                                                {% endif %}
-                                                {% if x.verbose_name == "coordinates" and object.coords %}
-                                                    <script type="text/javascript">
-                      window.addEventListener("map:init", function (e) {
-                              var detail = e.detail;
-
-                              L.marker([{{object.coords.lat}}, {{object.coords.lon}}]).addTo(detail.map);
-
-                              detail.map.setView([{{object.coords.lat}},{{object.coords.lon}}], 15);
-                          }, false);
-                    
-                      
-                                                    </script>
-                                                {% endif %}
-                                            </td>
-                                        </tr>
+        <div class="row">
+            <div class="col-md-6">
+                <h3 class="text-center">Informationen zur Person</h3>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <tbody>
+                            <tr>
+                                <th>Namen</th>
+                                <td>
+                                    <small>Vorname:</small> {{ object.vorname }}<br />
+                                    <small>Nachname:</small> {{ object.nachname }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Herkunftsort</th>
+                                <td>{% if object.herkunft %} <a href="{{object.herkunft.get_absolute_url }}">{{ object.herkunft }}</a> {% else %} keine Angaben {% endif %}</td>
+                            </tr>
+                            <tr>
+                                <th>Bezeichnung</th>
+                                <td>
+                                    {% if object.bezeichnung %}{{ object.bezeichnung }} {% else %} keine Angaben {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>mögliche Doublette von</th>
+                                <td>
+                                    {% if object.verknuepft.all %}
+                                        {% for x in object.verknuepft.all %}
+                                        <a href="{{ x.get_absolute_url }}">{{ x }}</a><br />
+                                        {% endfor %}
+                                        {% for x in object.rvn_person_verknuepft_person.all %}
+                                        <a href="{{ x.get_absolute_url }}">{{ x }}</a><br />
+                                        {% endfor %}
+                                    {% else %}
+                                    keine Angaben
                                     {% endif %}
-                                {% endif %}
-                            {% endif %}
-                        {% endfor %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>weiblich</th>
+                                <td>{% if object.weiblich %} <i data-feather="check"></i> {% else %} <i data-feather="x"></i> {% endif %}</td>
+                            </tr>
+                            <tr>
+                                <th>jüdisch</th>
+                                <td>{% if object.jude %} <i data-feather="check"></i> {% else %} <i data-feather="x"></i> {% endif %}</td>
+                            </tr>
+                        </tbody>
                     </table>
                 </div>
-                <div class="col-md-6">
-                    {% if class_name == "Geography" %}
-                        {% leaflet_map "yourmap" callback="window.map_init_basic" %}
-                    {% endif %}
-                    <div id="visualization"></div>
-                    <script src="{% static 'netvis/js/netvis.js' %}"></script>
-                    <script type="text/javascript">
-            showGraph("visualization", "{% url 'netvis:graph' app_name=app_name model_name=class_name|lower pk=object.id %}")
-                    </script>
-                </div>
+                <h3 class="pt-3 text-center">erwähnt in folgenden Einträgen</h3>
+                <div class="table-responsive">
+                    <table class="table table-hover" id="angabe_table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Datum</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for x in object.mentioned_in_Angabe.all %}
+                            <tr>
+                                <td><a href="{{ x.get_absolute_url }}">{{ x.legacy_pk }}</a></td>
+                                <td>{{ x.datum }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    </div>
+                
             </div>
-            {% if user.is_authenticated %}
-                <div class="card-footer d-flex justify-content-end ">
-                    <a href="{{ object.get_delete_url }}" title="delete">
-                        <i data-feather="delete"></i>
-                    </a>
-                </div>
-            {% endif %}
+            <div class="col-md-6">
+                <h3 class="text-center">Verbindungen der Person als Netzwerk</h3>
+                <div id="visualization" style="height: 400px;"></div>
+                <script src="{% static 'netvis/js/netvis.js' %}"></script>
+                <script type="text/javascript">
+                    showGraph("visualization", "{% url 'netvis:graph' app_name=app_name model_name=class_name|lower pk=object.id %}")
+                </script>
+                
+                <h3 class="text-center pt-3">Herkunftsort</h3>
+                {% if object.herkunft.lat %}
+                {% leaflet_map "yourmap" callback="window.map_init_basic" %}
+                <script type="text/javascript">
+                    function map_init_basic (map, options) {
+                            var placeName = "{{ object.herkunft.name }}"
+                            var lat = "{{ object.herkunft.lat }}".replace(",", ".")
+                            var lng = "{{ object.herkunft.lng }}".replace(",", ".")
+                            L.marker([parseFloat(lat), parseFloat(lng)]).addTo(map)
+                            .bindPopup(placeName)
+                            map.setView([parseFloat(lat), parseFloat(lng)], 10)
+                    };
+                </script>
+                {% else %} <p>keine Angaben bzw. Koordination zum Herkunftsort</p>
+                {% endif %}
+            </div>
         </div>
+        {% if user.is_authenticated %}
+        <div class="card-footer d-flex justify-content-end ">
+            <a href="{{ object.get_delete_url }}" title="delete">
+                <i data-feather="delete"></i>
+            </a>
+        </div>
+        {% endif %}
     </div>
+</div>
 {% endblock custom %}
 {% endblock content %}
+{% block scripts2 %}
+<script>
+    $(document).ready(function () {
+        $('#angabe_table').DataTable({
+            language: {
+                url: 'https://cdn.datatables.net/plug-ins/1.13.4/i18n/de-DE.json',
+            },
+        });
+    });
+</script>
+{% endblock scripts2 %}
