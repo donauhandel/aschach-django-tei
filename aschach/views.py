@@ -569,11 +569,12 @@ class RegionListView(GenericListView):
         "name",
     ]
     enable_merge = True
+    template_name = "aschach/custom_list.html"
 
 
 class RegionDetailView(BaseDetailView):
     model = Region
-    template_name = "browsing/generic_detail.html"
+    template_name = "aschach/region_detail.html"
 
 
 class RegionCreate(BaseCreateView):
