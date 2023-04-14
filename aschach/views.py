@@ -113,9 +113,8 @@ class AngabeListView(GenericListView):
         "hochwasser",
         "ladung",
         "nichts",
-        "orig_data_csv"
+        "orig_data_csv",
     ]
-    enable_merge = False
     template_name = "aschach/custom_list.html"
 
 
@@ -161,7 +160,6 @@ class FahrzeugListView(GenericListView):
         "id",
         "id",
     ]
-    enable_merge = True
 
 
 class FahrzeugDetailView(BaseDetailView):
@@ -206,7 +204,6 @@ class FirmaListView(GenericListView):
         "id",
         "name",
     ]
-    enable_merge = True
 
 
 class FirmaDetailView(BaseDetailView):
@@ -251,7 +248,6 @@ class LadungListView(GenericListView):
         "id",
         "id",
     ]
-    enable_merge = True
 
 
 class LadungDetailView(BaseDetailView):
@@ -296,7 +292,6 @@ class NachNameListView(GenericListView):
         "id",
         "name",
     ]
-    enable_merge = True
 
 
 class NachNameDetailView(BaseDetailView):
@@ -341,7 +336,6 @@ class OrtListView(GenericListView):
         "id",
         "name",
     ]
-    enable_merge = True
     template_name = "aschach/custom_list.html"
 
 
@@ -387,7 +381,6 @@ class PersonListView(GenericListView):
         "id",
         "has_title",
     ]
-    enable_merge = True
     template_name = "aschach/custom_list.html"
 
 
@@ -433,7 +426,6 @@ class PersonAngabeListView(GenericListView):
         "id",
         "id",
     ]
-    enable_merge = True
 
 
 class PersonAngabeDetailView(BaseDetailView):
@@ -478,7 +470,6 @@ class PersonLadungListView(GenericListView):
         "id",
         "id",
     ]
-    enable_merge = True
 
 
 class PersonLadungDetailView(BaseDetailView):
@@ -523,7 +514,6 @@ class PersonenBezeichnungListView(GenericListView):
         "id",
         "bezeichnung",
     ]
-    enable_merge = True
 
 
 class PersonenBezeichnungDetailView(BaseDetailView):
@@ -568,7 +558,6 @@ class RegionListView(GenericListView):
         "id",
         "name",
     ]
-    enable_merge = True
     template_name = "aschach/custom_list.html"
 
 
@@ -614,7 +603,6 @@ class ScanListView(GenericListView):
         "id",
         "datei_name",
     ]
-    enable_merge = True
 
 
 class ScanDetailView(BaseDetailView):
@@ -659,7 +647,6 @@ class VorNameListView(GenericListView):
         "id",
         "name",
     ]
-    enable_merge = True
 
 
 class VorNameDetailView(BaseDetailView):
@@ -703,8 +690,14 @@ class WareListView(GenericListView):
     init_columns = [
         "id",
         "name",
+        "beschreibung",
+        "name_orig"
     ]
-    enable_merge = True
+    template_name = "aschach/custom_list.html"
+    excluded_cols = [
+        "legacy_id",
+        "orig_data_csv"
+    ]
 
 
 class WareDetailView(BaseDetailView):
@@ -747,9 +740,7 @@ class WareLadungListView(GenericListView):
     table_class = WareLadungTable
     init_columns = [
         "id",
-        "id",
     ]
-    enable_merge = True
 
 
 class WareLadungDetailView(BaseDetailView):
