@@ -702,7 +702,7 @@ class WareListView(GenericListView):
 
 class WareDetailView(BaseDetailView):
     model = Ware
-    template_name = "browsing/generic_detail.html"
+    template_name = "aschach/ware_detail.html"
 
 
 class WareCreate(BaseCreateView):
