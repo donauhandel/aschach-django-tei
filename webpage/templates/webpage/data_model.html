@@ -1,13 +1,24 @@
 {% extends "webpage/base.html" %}
 {% load static %}
 {% load webpage_extras %}
-{% block title %} Data Model {% endblock %}
+{% block title %} Data Model {% endblock title %}
 {% block content %}
 <div class="container">
-    <style>
-        #visualization {
-            height: 800px;
-        }
-    </style>
-    {% include 'django_spaghetti/plate.html' %}
-{% endblock %}
+    <div class="card">
+        <div class="card-header">
+            <h1 class="card-title">{% projects_metadata "title" %}</h1>
+        </div>
+        <div class="card-body">
+            <div id="visualization"></div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+{% block scripts2 %}   
+<style>
+    #visualization {
+        height: 800px;
+    }
+</style>
+{% include "django_spaghetti/plate.html" %}
+{% endblock scripts2 %}
