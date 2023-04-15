@@ -246,8 +246,11 @@ class LadungListView(GenericListView):
     table_class = LadungTable
     init_columns = [
         "id",
-        "id",
+        "angabe",
+        "waren",
+        "personen"
     ]
+    template_name = "aschach/custom_list.html"
 
 
 class LadungDetailView(BaseDetailView):
@@ -741,6 +744,7 @@ class WareLadungListView(GenericListView):
     init_columns = [
         "id",
     ]
+    template_name = "aschach/custom_list.html"
 
 
 class WareLadungDetailView(BaseDetailView):

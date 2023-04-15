@@ -245,6 +245,14 @@ class LadungListFilter(django_filters.FilterSet):
         help_text=Ladung._meta.get_field("legacy_id").help_text,
         label=Ladung._meta.get_field("legacy_id").verbose_name,
     )
+    rvn_angabe_ladung_ladung = django_filters.ModelMultipleChoiceFilter(
+        queryset=Angabe.objects.all(),
+        help_text="Zugehöriger Protokolleintrag",
+        label="Protokolleintrag",
+        widget=autocomplete.Select2Multiple(
+            url="aschach-ac:angabe-autocomplete",
+        ),
+    )
     bemerkungen = django_filters.CharFilter(
         lookup_expr="icontains",
         help_text=Ladung._meta.get_field("bemerkungen").help_text,
