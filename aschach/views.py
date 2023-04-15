@@ -255,7 +255,7 @@ class LadungListView(GenericListView):
 
 class LadungDetailView(BaseDetailView):
     model = Ladung
-    template_name = "browsing/generic_detail.html"
+    template_name = "aschach/ladung_detail.html"
 
 
 class LadungCreate(BaseCreateView):

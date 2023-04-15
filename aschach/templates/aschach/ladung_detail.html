@@ -1,0 +1,117 @@
+{% extends "webpage/base.html" %}
+{% load leaflet_tags %}
+{% load static %}
+{% load netvis_extras %}
+{% load webpage_extras %}
+{% block title %}
+{{ object }}
+{% endblock title %}
+{% block scriptHeader %}
+<link rel="stylesheet" href="{% static 'netvis/css/netvis.css' %}" />
+<link href="https://cdn.datatables.net/v/bs5/dt-1.13.4/datatables.min.css" rel="stylesheet"/>
+<script src="https://cdn.datatables.net/v/bs5/dt-1.13.4/datatables.min.js"></script>
+<!-- optional -->
+{% load_netvis_js %}
+{% endblock scriptHeader %}
+{% block content %}
+<!-- <div class="container"> -->
+<div class="card w-100">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-md-2">
+                {% if object.get_prev %}
+                <h2>
+                    <a href="{{ object.get_prev }}" title="previous" class="d-flex justify-content-start">
+                        <i data-feather="chevron-left"></i>
+                    </a>
+                </h2>
+                {% endif %}
+            </div>
+            <div class="col-md-8">
+                <h2 class="d-flex justify-content-center">
+                    <small class="pe-2"><a href="{{ object.get_listview_url }}" title="back to listview"><i
+                                data-feather="list"></i></small></a>
+                    {{ object }}
+                    {% if user.is_authenticated %}
+                    <a href="{{ object.get_edit_url }}" title="edit">
+                        <i data-feather="edit"></i>
+                    </a>
+                    {% endif %}
+                </h2>
+            </div>
+            <div class="col-md-2">
+                <h2>
+                    {% if object.get_next %}
+                    <a href="{{ object.get_next }}" class="d-flex justify-content-end" title="next">
+                        <i data-feather="chevron-right"></i>
+                    </a>
+                </h2>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        {% block custom %}
+        <div class="row">
+                <h3 class="text-center">Informationen zur Ware</h3>
+                <h4 class="text-center"><small>verzeichnet in:</small><a href="{{ object.rvn_angabe_ladung_ladung.first.get_absolut_url }}">{{ object.rvn_angabe_ladung_ladung.first }}</a></h4>
+                {% include "aschach/partials_ladung.html" %}
+                <h3 class="pt-3 text-center">erwähnt in folgenden Einträgen</h3>
+                <div class="table-responsive">
+                    <table class="table table-hover" id="angabe_table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Datum</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for x in object.mentioned_in_Angabe.all %}
+                            <tr>
+                                <td><a href="{{ x.get_absolute_url }}">{{ x.legacy_pk }}</a></td>
+                                <td>{{ x.datum }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                
+
+            <div class="col-md-6">
+                <h3 class="text-center pt-3">Verbindungen der Ware als Netzwerk</h3>
+                <div id="visualization" style="height: 400px;"></div>
+                <script src="{% static 'netvis/js/netvis.js' %}"></script>
+                <script type="text/javascript">
+                    showGraph("visualization", "{% url 'netvis:graph' app_name=app_name model_name=class_name|lower pk=object.id %}")
+                </script>
+                
+                
+            </div>
+        </div>
+        {% if user.is_authenticated %}
+        <div class="card-footer d-flex justify-content-end ">
+            <a href="{{ object.get_delete_url }}" title="delete">
+                <i data-feather="delete"></i>
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock custom %}
+{% endblock content %}
+{% block scripts2 %}
+<script>
+    $(document).ready(function () {
+        $('#angabe_table').DataTable({
+            language: {
+                url: 'https://cdn.datatables.net/plug-ins/1.13.4/i18n/de-DE.json',
+            },
+        });
+        $('#person_table').DataTable({
+            language: {
+                url: 'https://cdn.datatables.net/plug-ins/1.13.4/i18n/de-DE.json',
+            },
+        });
+    });
+</script>
+{% endblock scripts2 %}
