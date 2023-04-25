@@ -39,6 +39,7 @@ class AngabeFilterFormHelper(FormHelper):
                 "related_good",
                 "related_person",
                 "related_place",
+                "datum",
                 css_id="basic_search_fields",
             ),
         )
@@ -161,10 +162,10 @@ class LadungFilterFormHelper(FormHelper):
         self.helper = FormHelper()
         self.form_class = "genericFilterForm"
         self.form_method = "GET"
-        self.helper.form_tag = False
+        self.form_tag = False
         self.add_input(Submit("Filter", "Search"))
         self.layout = Layout(
-            Fieldset("Basic search options", "id", css_id="basic_search_fields"),
+            Fieldset("", "personen", "waren", "zielort", css_id="basic_search_fields"),
             Accordion(
                 AccordionGroup(
                     "Advanced search",
@@ -179,13 +180,9 @@ class LadungFilterFormHelper(FormHelper):
                     "per_kommission",
                     "per_schiffmeister",
                     "per_schiffukgut",
-                    "personen",
-                    "waren",
                     "weitertransport",
-                    "zielort",
                     css_id="more",
                 ),
-                AccordionGroup("admin", "legacy_id", css_id="admin_search"),
             ),
         )
 

@@ -686,6 +686,19 @@ class Ladung(models.Model):
     def get_edit_url(self):
         return reverse("aschach:ladung_edit", kwargs={"pk": self.id})
 
+    @cached_property
+    def get_wl(self):
+        wl = []
+        for y in WareLadung.objects.filter(ladung=self.id):
+            wl.append(
+                {
+                    "ladung": self,
+                    "warenladung": y,
+                    "personenLadung": PersonLadung.objects.filter(ladung=self.id),
+                }
+            )
+        return wl
+
     def get_next(self):
         next = next_in_order(self)
         if next:

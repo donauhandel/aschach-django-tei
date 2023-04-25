@@ -62,6 +62,7 @@ class LadungTable(tables.Table):
     personen = tables.columns.ManyToManyColumn()
     waren = tables.columns.ManyToManyColumn()
     zielort = tables.columns.ManyToManyColumn()
+    angabe = tables.columns.TemplateColumn("<a href='{{ record.rvn_angabe_ladung_ladung.first.get_absolute_url }}'>{{ record.rvn_angabe_ladung_ladung.first }}</a>", orderable=False)
 
     class Meta:
         model = Ladung

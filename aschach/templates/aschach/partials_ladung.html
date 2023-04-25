@@ -1,0 +1,80 @@
+<div class="table-responsive">
+    <table class="table  table-hover">
+        <thead>
+            <tr>
+                <th>LadungsId</th>
+                <th>LWId</th>
+                <th>Name/Bezeichnung</th>
+                <th>Herkunft</th>
+                <th>Menge</th>
+                <th>Gebinde</th>
+                <th>Anzahl</th>
+                <th>Einheit</th>
+                <th>Güter</th>
+                <th>fl</th>
+                <th>ß</th>
+                <th>d</th>
+                <th>Zielort</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for x in object.get_wl %}
+            <tr>
+                <td>
+                    <a href="{{ x.ladung.get_absolute_url }}">{{ x.ladung.legacy_pk }}</a>
+                </td>
+                <td>
+                    <a href="{{ x.warenladung.get_absolute_url }}">{{ x.warenladung.legacy_pk }}</a>
+                </td>
+                <td>
+                    {% for y in x.personenLadung.all %}
+                    <a href="{{ y.person.get_absolute_url }}">{{ y.person }}</a>
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for y in x.personenLadung.all %}
+                    {% if y.person.herkunft %}
+                    <a href="{{ y.person.herkunft.get_absolute_url }}">{{ y.person.herkunft }}</a>
+                    {% endif %}
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for y in x.ladung.menge_gebinde.all %}
+                    {{ y.menge }}<br />
+                    {% endfor %}
+                </td>
+                <td>
+                    {% if x.landung.menge_gebinde.all %}
+                    {% for y in x.ladung.menge_gebinde.all %}
+                    <a href="{{ y.gebinde.get_absolute_url }}">{{ y.gebinde }}</a><br />
+                    {% endfor %}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if x.warenladung.anzahl_original %}
+                    <abbr title="{{ x.warenladung.anzahl_original }}">{{ x.warenladung.anzahl }}</abbr>
+                    {% else %}
+                    {{ x.warenladung.anzahl }}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if x.warenladung.einheit %}
+                    <a href="{{ x.warenladung.einheit.get_absolute_url }}">{{ x.warenladung.einheit }}</a>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{{ x.warenladung.ware.get_absolute_url }}">{{ x.warenladung.ware }}</a>
+                </td>
+                <td>{{ x.warenladung.maut_fl }}</td>
+                <td>{{ x.warenladung.maut_s }}</td>
+                <td>{{ x.warenladung.maut_d }}</td>
+                <td>
+                    {% for y in x.ladung.zielort.all %}
+                    <a href="{{ y.get_absolute_url }}">{{ y }}</a>
+                    {% endfor %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
