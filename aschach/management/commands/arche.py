@@ -53,13 +53,14 @@ class Command(BaseCommand):
                 if x is not None
             ]
         )
-        items = Angabe.objects.filter(related_person=None)
         for x in list(hs):
             items = Angabe.objects.filter(scan__ordner=x).distinct().order_by("datum")
             better_date = items.filter(datum__gt="1000-01-01").order_by("datum")
             datum = f"{better_date.first().datum}"
             last_year = f"{better_date.last().datum}"[:4]
             year = datum[:4]
+            if datum.startswith('16'):
+                continue
             print(x, datum, last_year)
             file_name = f"{x}.xml"
             subj = URIRef(f"{BASE_URI}/{file_name}")

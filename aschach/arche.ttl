@@ -19,7 +19,7 @@
     acdh:hasPid "https://hdl.handle.net/21.11115/0000-000F-8289-3" ;
     acdh:hasContact <https://d-nb.info/gnd/13140007X> ;
     acdh:hasCoverageEndDate "1740-12-31"^^xsd:date ;
-    acdh:hasCoverageStartDate "1652-01-01"^^xsd:date ;
+    acdh:hasCoverageStartDate "1706-01-01"^^xsd:date ;
     acdh:hasCreator <https://d-nb.info/gnd/103048337X>,
         <https://d-nb.info/gnd/1031446176>,
         <https://d-nb.info/gnd/13140007X> ;
