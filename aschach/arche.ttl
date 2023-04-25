@@ -1,6 +1,20 @@
 @prefix acdh: <https://vocabs.acdh.oeaw.ac.at/schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
+<https://id.acdh.oeaw.ac.at/donauhandel-aschach/boot.png> a acdh:Resource ;
+    acdh:isTitleImageOf <https://id.acdh.oeaw.ac.at/donauhandel-aschach> ;
+    acdh:hasTitle "Aschacher Mautprotokolle Titelbild"@de ;
+    acdh:hasDescription "Titelbild zu der Sammlung Aschacher Mautprotokolle."@de ;
+    acdh:isPartOf <https://id.acdh.oeaw.ac.at/donauhandel-aschach> ;
+    acdh:hasCreator <https://d-nb.info/gnd/1031446176> ;
+    acdh:hasMetadataCreator <https://d-nb.info/gnd/1043833846> ;
+    acdh:hasRightsHolder <https://d-nb.info/gnd/1031446176> ;
+    acdh:hasOwner <https://d-nb.info/gnd/1031446176> ;
+    acdh:hasLicensor <https://d-nb.info/gnd/1031446176> ;
+    acdh:hasLicense <https://vocabs.acdh.oeaw.ac.at/archelicenses/cc-by-4-0> ;
+    acdh:hasCategory <https://vocabs.acdh.oeaw.ac.at/archecategory/image> ;
+    acdh:hasDepositor <https://d-nb.info/gnd/13140007X> .
+
 <https://id.acdh.oeaw.ac.at/donauhandel-aschach> a acdh:TopCollection ;
     acdh:hasPid "https://hdl.handle.net/21.11115/0000-000F-8289-3" ;
     acdh:hasContact <https://d-nb.info/gnd/13140007X> ;

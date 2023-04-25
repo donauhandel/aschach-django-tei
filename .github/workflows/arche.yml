@@ -19,6 +19,8 @@ jobs:
       run: pip install requests
     - name: fetch data
       run: python fetch_data.py
+    - name: fetch boot.png
+      run: wget https://dh-aschach.acdh-dev.oeaw.ac.at/static/webpage/img/boot.png -O to_ingest/boot.png
     - name: ingestion dependencies
       run: composer require "acdh-oeaw/arche-ingest:^1"
     - name: Fetch WF-URL

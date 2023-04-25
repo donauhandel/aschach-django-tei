@@ -1,5 +1,5 @@
 # composer require acdh-oeaw/arche-ingest
-ARCHE=https://arche-dev.acdh-dev.oeaw.ac.at/api
+ARCHE=http://127.0.0.1/api
 PROJECT_NAME=donauhandel-aschach
 ARCHE_LOGIN="${ARCHE_LOGIN:=username}"
 ARCHE_PASSWORD="${ARCHE_PASSWORD:=password}"
