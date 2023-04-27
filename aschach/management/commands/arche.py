@@ -68,7 +68,7 @@ class Command(BaseCommand):
                 title_str = f"Einträge Aschacher Mautprotokolle von {year}"
                 description = f"XML/TEI Serialisierung von {items.count()} Einträgen in den Aschacher Mautprotokollen aus dem Jahr {year}."
             else:
-                title_str = f"Einträge Aschacher Mautprotokolle von {year} bis {last_year}"
+                title_str = f"Einträge, Nachträge Aschacher Mautprotokolle von {year} bis {last_year}"
                 description = f"XML/TEI Serialisierung von {items.count()} Einträgen in den Aschacher Mautprotokollen aus den Jahren {year} bis {last_year}."
             g.add((subj, RDF.type, ARCHE["Resource"]))
             g.add((subj, ARCHE["hasTitle"], Literal(title_str, lang="de")))
