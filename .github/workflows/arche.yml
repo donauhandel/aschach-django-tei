@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       REDMINE_ID: 21550
-      ARCHE_INSTANCE: arche-curation.acdh-dev
+      ARCHE_INSTANCE: arche.acdh
       PROJECT_NAME : donauhandel-aschach
       OUTPUT_DIR: to_ingest
     steps:
